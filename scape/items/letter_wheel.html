@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Conexões de Letras</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #f0f0f0;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 0 10px #0002;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .texto-container {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        #textoGerado {
+            background: white;
+            padding: 15px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            min-height: 50px;
+            margin-top: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+    <h1>Conexões de Letras</h1>
+    <canvas id="canvas" width="600" height="600"></canvas><br>
+    <button onclick="desenhar()">Nova Conexão</button>
+    <button onclick="imprimir()">Imprimir</button>
+
+    <div class="texto-container">
+        <textarea id="textoOriginal" placeholder="Digite seu texto aqui..." oninput="traduzirTexto()"></textarea>
+        <div id="textoGerado"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        let conexoes = [];
+
+        const config = {
+            raio: 250,
+            fonte: "24px Arial",
+            corLinha: "#2196F3",
+            espessura: 3,
+            variacao: 50,
+            espaco: 10,
+            raioLetra: 20,
+            minDistCentro: 300
+        };
+
+        function embaralhar(arr) {
+            return arr.sort(() => Math.random() - 0.5);
+        }
+
+        function desenharLetra(letra, x, y) {
+            // Primeiro desenha a conexão (movido para desenhar())
+            ctx.font = config.fonte;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            // Depois desenha o círculo branco e a letra por cima
+            ctx.beginPath();
+            ctx.arc(x, y, config.raioLetra, 0, Math.PI * 2);
+            ctx.fillStyle = "white";
+            ctx.fill();
+            ctx.strokeStyle = "#333";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = "#333";
+            ctx.fillText(letra, x, y);
+        }
+
+        function calcularPonto(x1, y1, x2, y2, dist) {
+            const ang = Math.atan2(y2 - y1, x2 - x1);
+            return {
+                x: x1 + Math.cos(ang) * dist ,
+                y: y1 + Math.sin(ang) * dist
+            };
+        }
+
+        function desenharConexao(x1, y1, x2, y2, l1, l2, pos) {
+            const ini = calcularPonto(x1, y1, x2, y2, 0);
+            const fim = calcularPonto(x2, y2, x1, y1, 0);
+            const cx = canvas.width/2;
+            const cy = canvas.height/2;
+
+            const angCentro1 = Math.atan2(cy - ini.y, cx - ini.x);
+            const angCentro2 = Math.atan2(cy - fim.y, cx - fim.x);
+
+            const p1 = {
+                x: ini.x + Math.cos(angCentro1) * config.minDistCentro,
+                y: ini.y + Math.sin(angCentro1) * config.minDistCentro
+            };
+
+            const p2 = {
+                x: fim.x + Math.cos(angCentro2) * config.minDistCentro,
+                y: fim.y + Math.sin(angCentro2) * config.minDistCentro
+            };
+
+            const mx = (p1.x + p2.x)/2 + (Math.random() - 0.5) * config.variacao;
+            const my = (p1.y + p2.y)/2 + (Math.random() - 0.5) * config.variacao;
+
+            ctx.beginPath();
+            ctx.strokeStyle = config.corLinha;
+            ctx.lineWidth = config.espessura;
+            ctx.moveTo(ini.x, ini.y);
+            ctx.quadraticCurveTo(mx, my, fim.x, fim.y);
+            ctx.stroke();
+        }
+
+        function desenhar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const cx = canvas.width/2;
+            const cy = canvas.height/2;
+
+            const pos = {};
+            letras.forEach((l, i) => {
+                const ang = (i/letras.length) * 2 * Math.PI;
+                const x = cx + config.raio * Math.cos(ang);
+                const y = cy + config.raio * Math.sin(ang);
+                pos[l] = {x, y};
+            });
+
+            const letrasRandom = embaralhar([...letras]);
+            conexoes = [];
+
+            // Primeiro desenha todas as conexões
+            for (let i = 0; i < letras.length/2; i++) {
+                const l1 = letrasRandom[i];
+                const l2 = letrasRandom[i + letras.length/2];
+                conexoes.push([l1, l2]);
+                desenharConexao(pos[l1].x, pos[l1].y, pos[l2].x, pos[l2].y, l1, l2, pos);
+            }
+
+            // Depois desenha todas as letras por cima
+            letras.forEach((l, i) => {
+                desenharLetra(l, pos[l].x, pos[l].y);
+            });
+
+            traduzirTexto();
+        }
+
+        function traduzirTexto() {
+            const texto = document.getElementById("textoOriginal").value.toUpperCase();
+            let textoTraduzido = "";
+
+            for (let letra of texto) {
+                if (letra === " ") {
+                    textoTraduzido += " ";
+                    continue;
+                }
+
+                let letraSubstituida = letra;
+                for (let [l1, l2] of conexoes) {
+                    if (letra === l1) {
+                        letraSubstituida = l2;
+                        break;
+                    } else if (letra === l2) {
+                        letraSubstituida = l1;
+                        break;
+                    }
+                }
+                textoTraduzido += letraSubstituida;
+            }
+
+            document.getElementById("textoGerado").textContent = textoTraduzido;
+        }
+
+        function imprimir() {
+            try {
+                const link = document.createElement("a");
+                link.href = canvas.toDataURL();
+                link.download = `conexoes_${new Date().toISOString().slice(0,10)}.png`;
+                link.click();
+            } catch (e) {
+                console.error("Erro:", e);
+                alert("Erro ao gerar imagem");
+            }
+        }
+
+        window.onload = desenhar;
+    </script>
+</body>
+</html>

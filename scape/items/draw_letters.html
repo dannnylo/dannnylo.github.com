@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Desenhando letras</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+
+    <h1>Desenhando letras</h1>
+
+    <div>
+          <div class="row">
+            
+            <div class="col-md-4">
+              <textarea id="texto" class="form-control" placeholder="Digite seu texto aqui..." oninput="desenharLetras()" style="height: 100px;"></textarea>
+            </div>
+            <div class="col-md-4">
+              <div id="instrucoes" class="mt-3"></div>
+            </div>
+          </div>
+            <div class="row">
+            <div class="col-md-4">
+              <canvas id="myCanvas" width="600" height="600"></canvas>
+              <button onclick="salvarImagem()">Salvar Imagem</button><br>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Adicionar fundo branco ao canvas
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Cores para os vértices
+        const cores = ['red', 'yellow', 'green', 'blue', 'purple', 'pink', 'gray'];
+
+        // Desenhar a caixa
+        ctx.lineWidth = 20; // Aumentei a largura da linha de 8 para 15
+
+        // Linha superior
+        ctx.beginPath();
+        ctx.moveTo(50, 50);
+        ctx.lineTo(450, 50);
+        ctx.stroke();
+
+        // Linhas verticais
+        ctx.beginPath();
+        ctx.moveTo(50, 50);
+        ctx.lineTo(50, 450);
+        ctx.moveTo(450, 50);
+        ctx.lineTo(450, 450);
+        ctx.stroke();
+
+        // Linhas horizontais do meio e inferior
+        ctx.beginPath();
+        ctx.moveTo(50, 250);
+        ctx.lineTo(450, 250);
+        ctx.moveTo(50, 450);
+        ctx.lineTo(450, 450);
+        ctx.stroke();
+
+        // Desenhar barras diagonais
+        ctx.beginPath();
+        ctx.moveTo(50, 50); // Vermelho
+        ctx.lineTo(450, 450); // Rosa
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(450, 50); // Amarelo
+        ctx.lineTo(50, 450); // Roxo
+        ctx.stroke();
+
+        // Desenhar círculos coloridos nos vértices
+        function desenharCirculo(x, y, cor) {
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, Math.PI * 2); // Aumentado para 15
+            ctx.fillStyle = cor;
+            ctx.fill();
+        }
+
+        // Vértices superiores
+        desenharCirculo(50, 50, cores[0]);
+        desenharCirculo(450, 50, cores[1]);
+
+        // Vértices do meio
+        desenharCirculo(50, 250, cores[2]);
+        desenharCirculo(450, 250, cores[3]);
+
+        // Vértices inferiores
+        desenharCirculo(50, 450, cores[4]);
+        desenharCirculo(450, 450, cores[5]);
+
+        // Círculo no meio
+        desenharCirculo(250, 250, cores[6]);
+
+
+
+        function desenharLetras() {
+          const text = document.getElementById('texto').value.toUpperCase();
+          document.getElementById('instrucoes').innerHTML = '';
+
+          for (let i = 0; i < text.length; i++) {
+            var letra = text.charAt(i);
+            var dado = '';
+
+            if (letra == 'A') {
+              dado = 'purple -> green -> red -> yellow -> blue -> gray -> green -> gray -> blue -> pink';
+            } else if (letra == 'B') {
+              dado = 'purple -> green -> red -> gay -> green -> gay -> purple';
+            } else if (letra == 'C') {
+              dado = 'pink -> purple -> green -> red -> yellow';
+            } else if (letra == 'D') {
+              dado = 'purple -> green -> red -> gray -> purple';
+            } else if (letra == 'E') {
+              dado = 'pink -> purple -> green -> gray -> green -> red -> yellow';
+            } else if (letra == 'F') {
+              dado = 'purple -> green -> gray -> green -> red -> yellow';
+            } else if (letra == 'G') {
+              dado = 'gray -> blue -> pink -> purple -> green -> red -> yellow';
+            } else if (letra == 'H') {
+              dado = 'purple -> green -> red -> green -> gray -> blue -> yellow -> blue -> pink';
+            } else if (letra == 'I') { 
+              dado = 'red -> green -> purple';
+            } else if (letra == 'J') {
+              dado = 'yellow -> blue -> pink -> purple -> green';
+            } else if (letra == 'K') { //
+              dado = 'K';
+            } else if (letra == 'L') {
+              dado = 'red -> green -> purple -> pink';
+            } else if (letra == 'M') {
+              dado = 'purple -> green -> red -> gray -> yellow -> blue -> pink';
+            } else if (letra == 'N') {
+              dado = 'purple -> green -> red -> gray -> pink -> blue -> yellow';            
+            } else if (letra == 'O') {
+              dado = 'purple -> green -> red -> yellow -> blue  -> pink -> purple';
+            } else if (letra == 'P') {
+              dado = 'purple -> green -> red -> yellow -> blue -> gray -> green';
+            } else if (letra == 'Q') {
+              dado = 'purple -> green -> red -> yellow -> blue  -> pink -> gray -> pink -> purple';
+            } else if (letra == 'R') {
+              dado = 'purple -> green -> red -> yellow -> blue -> gray -> pink';
+            } else if (letra == 'S') {
+              dado = 'yellow -> red  -> green -> gray -> blue -> pink -> purple';
+            } else if (letra == 'T') {
+              dado = 'red -> yellow -> blue -> pink';
+            } else if (letra == 'U') {
+              dado = 'red -> green -> purple -> pink -> blue -> yellow';            
+            } else if (letra == 'V') {
+              dado = 'red -> gray -> yellow';
+            } else if (letra == 'W') {
+              dado = 'green -> purple -> gray -> pink -> blue';
+            } else if (letra == 'X') {
+              dado = 'purple -> gray -> red -> gray -> yellow -> gray -> pink';
+            } else if (letra == 'Y') {
+              dado = 'purple -> gray -> red -> gray -> yellow';
+            } else if (letra == 'Z') {
+              dado = 'red -> yellow -> gray -> purple -> pink';
+            }
+            
+            document.getElementById('instrucoes').innerHTML += `${i + 1}. ${dado} <br>`;
+          }
+        }
+        function salvarImagem() {
+            try {
+                const link = document.createElement('a');
+                link.download = `draw_letters_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch(e) {
+                console.error('Erro:', e);
+                alert('Erro ao salvar imagem');
+            }
+        }
+    </script>
+</body>
+</html>

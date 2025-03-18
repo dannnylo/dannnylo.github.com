@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagem com Filtro Vermelho</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #f0f0f0;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 0 10px #0002;
+        }
+        textarea {
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #ee3333;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+    <h1>Mensagem com Filtro Vermelho</h1>
+    <textarea id="mensagem" placeholder="Digite sua mensagem secreta aqui..." oninput="gerarImagem()"></textarea><br>
+    <button onclick="salvarImagem()">Salvar Imagem</button><br>
+    <canvas id="canvas" width="800" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        function gerarImagem() {
+            const mensagem = document.getElementById('mensagem').value.toUpperCase();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Configuração do texto
+            ctx.font = '30px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Desenha texto em cyan (complementar ao vermelho)
+            ctx.fillStyle = '#00FFFF';
+            ctx.fillText(mensagem, canvas.width/2, canvas.height/2);
+
+            // Desenha ruído aleatório em vermelho
+            for(let i = 0; i < canvas.width; i += 4) {
+                for(let j = 0; j < canvas.height; j += 4) {
+                    if(Math.random() > 0.5) {
+                        ctx.fillStyle = '#FF0000';
+                        ctx.fillRect(i, j, 3, 3);
+                    }
+                }
+            }
+        }
+
+        function salvarImagem() {
+            try {
+                const link = document.createElement('a');
+                link.download = `mensagem_secreta_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch(e) {
+                console.error('Erro:', e);
+                alert('Erro ao salvar imagem');
+            }
+        }
+
+        // Gera imagem inicial
+        window.onload = gerarImagem;
+    </script>
+</body>
+</html>

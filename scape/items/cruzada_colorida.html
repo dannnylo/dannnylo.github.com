@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Cruzadinha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .input-container {
+            margin-top: 20px;
+        }
+        .clue-list {
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+        }
+        .hidden {
+            background-color: lightgray;
+        }
+        .correct {
+            background-color: lightgreen;
+        }
+        .wrong {
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+    <h2>Gerador de Cruzadinha</h2>
+    Palavra escondida
+    <input type="text" id="hidden_word" value="vespa">
+    <div class="input-container">
+        <h3>Digite 6 palavras e suas descrições:</h3>
+        <div id="wordInputs"></div>
+        <button onclick="generateCrossword()">Gerar Cruzadinha</button>
+    </div>
+    
+    <canvas id="crosswordCanvas" width="1000" height="1000"></canvas>
+    <div class="clue-list" id="clueList"></div>
+    <script>
+        let words = [];
+        let gridSize =  20; // Increased grid size to 11x11
+        let grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
+
+        function createInputs() {
+            let container = document.getElementById("wordInputs");
+            container.innerHTML = "";
+            for (let i = 0; i < 6; i++) {
+                container.innerHTML += `
+                    <input type="text" id="word${i}" placeholder="Palavra ${i+1}" value="Vespa" maxlength="10">
+                    <input type="text" id="desc${i}" placeholder="Descrição ${i+1}" value="Animal que pica"><br>
+                `;
+            }
+        }
+
+        function placeWords() {
+            let directions = ['horizontal', 'vertical'];
+            const hiddenWord = document.getElementById('hidden_word').value.toUpperCase();
+            for (let i = 0; i < words.length; i++) {
+                let word = '' + (i + 1) +  words[i].word.toUpperCase();
+                let placed = false;
+
+                while (!placed) {
+                    let direction = directions[Math.floor(Math.random() * directions.length)];
+                    let row = Math.floor(Math.random() * (gridSize - 1)) + 1;
+                    let col = Math.floor(Math.random() * (gridSize - 1)) + 1;
+
+                    if (direction === 'horizontal' && col + word.length <= (gridSize - 1)) {
+                        if (word.split('').every((char, index) => !grid[row][col + index] || grid[row][col + index] === char)) {
+                            word.split('').forEach(function(char, index) {
+                                if (hiddenWord[i] == char) {
+                                    grid[row][col + index] = '* ' + char;
+                                } else {
+                                    grid[row][col + index] = char;                                    
+                                }
+                            });
+                            placed = true;
+                        }
+                    } else if (direction === 'vertical' && row + word.length <= (gridSize - 1)) {
+                        if (word.split('').every((char, index) => !grid[row + index][col] || grid[row + index][col] === char)) {
+                            word.split('').forEach(function(char, index) {
+                                if (hiddenWord[i] == char) {
+                                    grid[row][col + index] = '* ' + char;
+                                } else {
+                                    grid[row][col + index] = char;                                    
+                                }
+                            });
+                            placed = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        function generateCrossword() {
+            words = [];
+            grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
+
+            for (let i = 0; i < 6; i++) {
+                let word = document.getElementById(`word${i}`).value.trim();
+                let desc = document.getElementById(`desc${i}`).value.trim();
+                if (word && desc) {
+                    words.push({ word, desc });
+                }
+            }
+
+            if (words.length < 6) {
+                alert("Por favor, insira 6 palavras e suas descrições.");
+                return;
+            }
+
+            placeWords();
+            drawGrid();
+            showClues();
+        }
+
+        function drawGrid() {
+            let canvas = document.getElementById("crosswordCanvas");
+            let ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            let cellSize = 40;
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    if (grid[row][col]) {
+                        if ((grid[row][col] == '1') || (grid[row][col] == '2') || (grid[row][col] == '3') || (grid[row][col] == '4') || (grid[row][col] == '5') || (grid[row][col] == '6')) {
+                            ctx.fillText('' + grid[row][col]+'.' , col * cellSize + 10, row * cellSize + 30);
+                        } else {
+                            if (grid[row][col].includes('*')) {
+                                ctx.strokeStyle = 'red';
+                                ctx.strokeRect(col * cellSize, row * cellSize, cellSize, cellSize); 
+                            } else {
+                                ctx.strokeStyle = 'black';
+                                ctx.strokeRect(col * cellSize, row * cellSize, cellSize, cellSize); 
+                                
+                            }
+                            ctx.fillStyle = 'black';
+                            var char = grid[row][col].replace('*', '');
+                            ctx.fillText(char, col * cellSize + 10, row * cellSize + 30);
+                        }     
+                    }
+                }
+            }
+        }
+
+        function showClues() {
+            let clueList = document.getElementById("clueList");
+            clueList.innerHTML = "<h3>Dicas:</h3>";
+            words.forEach((word, index) => {
+                clueList.innerHTML += `<p>${index + 1}. ${word.desc}</p>`;
+            });
+        }
+
+        createInputs();
+    </script>
+</body>
+</html>

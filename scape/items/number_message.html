@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Mensagem com Números</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #f0f0f0;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 0 10px #0002;
+        }
+        textarea {
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+    <h1>Mensagem com Números</h1>
+    <textarea id="mensagem" placeholder="Digite sua mensagem aqui..." oninput="gerarImagem(true)"></textarea><br>
+    <button onclick="gerarNovaMatriz()">Nova Matriz</button><button onclick="salvarImagem()">Salvar Imagem</button><br>
+    <canvas id="canvas" width="1000" height="500"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let matriz_gerada = false;
+
+        function gerarMatrizAleatoria(linhas, colunas) {
+            const matriz = [];
+            for(let i = 0; i < linhas; i++) {
+                const linha = [];
+                for(let j = 0; j < colunas; j++) {
+                    linha.push(Math.floor(Math.random() * 10));
+                }
+                matriz.push(linha);
+            }
+            return matriz;
+        }
+
+        function desenharLetra(matriz, letra, posX, posY) {
+            const escala = 8; // Tamanho de cada letra em células
+            const patterns = {
+                ' ': [
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0]
+                ],
+                'A': [
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,1,0,0,1,0,0],
+                    [0,1,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,0,1],
+                    [1,1,1,1,1,1,1,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1]
+                ],
+                'B': [
+                    [1,1,1,1,1,1,0,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,1,1,1,1,1,0,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,1,1,1,1,1,0,0]
+                ],
+                'C': [
+                    [0,0,1,1,1,1,0,0],
+                    [0,1,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,1],
+                    [0,1,0,0,0,0,1,0],
+                    [0,0,1,1,1,1,0,0]
+                ],
+                'D': [
+                    [1,1,1,1,1,0,0,0],
+                    [1,0,0,0,0,1,0,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,1,0,0],
+                    [1,1,1,1,1,0,0,0]
+                ],
+                'E': [
+                    [1,1,1,1,1,1,1,1],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,1,1,1,1,1,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,1,1,1,1,1,1,1]
+                ],
+                'F': [
+                    [1,1,1,1,1,1,1,1],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,1,1,1,1,1,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0]
+                ],
+                'G': [
+                    [0,0,1,1,1,1,0,0],
+                    [0,1,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,1,1,1,1],
+                    [1,0,0,0,0,0,0,1],
+                    [0,1,0,0,0,0,1,0],
+                    [0,0,1,1,1,1,0,0]
+                ],
+                'H': [
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,1,1,1,1,1,1,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1]
+                ],
+                'I': [
+                    [1,1,1,1,1,1,1,1],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [1,1,1,1,1,1,1,1]
+                ],
+                'J': [
+                    [1,1,1,1,1,1,1,1],
+                    [0,0,0,0,1,0,0,0],
+                    [0,0,0,0,1,0,0,0],
+                    [0,0,0,0,1,0,0,0],
+                    [0,0,0,0,1,0,0,0],
+                    [1,0,0,0,1,0,0,0],
+                    [1,0,0,0,1,0,0,0],
+                    [0,1,1,1,0,0,0,0]
+                ],
+                'K': [
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,1,0,0],
+                    [1,0,0,0,1,0,0,0],
+                    [1,0,1,1,0,0,0,0],
+                    [1,1,0,0,1,0,0,0],
+                    [1,0,0,0,0,1,0,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,0,1]
+                ],
+                'L': [
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,1,1,1,1,1,1,1]
+                ],
+                'M': [
+                    [1,0,0,0,0,0,0,1],
+                    [1,1,0,0,0,0,1,1],
+                    [1,0,1,0,0,1,0,1],
+                    [1,0,0,1,1,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1]
+                ],
+                'N': [
+                    [1,0,0,0,0,0,0,1],
+                    [1,1,0,0,0,0,0,1],
+                    [1,0,1,0,0,0,0,1],
+                    [1,0,0,1,0,0,0,1],
+                    [1,0,0,0,1,0,0,1],
+                    [1,0,0,0,0,1,0,1],
+                    [1,0,0,0,0,0,1,1],
+                    [1,0,0,0,0,0,0,1]
+                ],
+                'O': [
+                    [0,0,1,1,1,1,0,0],
+                    [0,1,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [0,1,0,0,0,0,1,0],
+                    [0,0,1,1,1,1,0,0]
+                ],
+                'P': [
+                    [1,1,1,1,1,1,0,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,1,1,1,1,1,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0],
+                    [1,0,0,0,0,0,0,0]
+                ],
+                'Q': [
+                    [0,0,1,1,1,1,0,0],
+                    [0,1,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,1,0,0,1],
+                    [1,0,0,0,0,1,0,1],
+                    [0,1,0,0,0,0,1,0],
+                    [0,0,1,1,1,1,0,1]
+                ],
+                'R': [
+                    [1,1,1,1,1,1,0,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,1,1,1,1,1,0,0],
+                    [1,0,0,0,1,0,0,0],
+                    [1,0,0,0,0,1,0,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,0,1]
+                ],
+                'S': [
+                    [0,1,1,1,1,1,0,0],
+                    [1,0,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,0,0],
+                    [0,1,1,1,1,0,0,0],
+                    [0,0,0,0,0,1,1,0],
+                    [0,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,1,0],
+                    [0,1,1,1,1,1,0,0]
+                ],
+                'T': [
+                    [1,1,1,1,1,1,1,1],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0]
+                ],
+                'U': [
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [0,1,0,0,0,0,1,0],
+                    [0,0,1,1,1,1,0,0]
+                ],
+                'V': [
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [0,1,0,0,0,0,1,0],
+                    [0,1,0,0,0,0,1,0],
+                    [0,0,1,0,0,1,0,0],
+                    [0,0,1,0,0,1,0,0],
+                    [0,0,0,1,1,0,0,0]
+                ],
+                'W': [
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,1,1,0,0,1],
+                    [1,0,1,0,0,1,0,1],
+                    [1,1,0,0,0,0,1,1],
+                    [1,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,1]
+                ],
+                'X': [
+                    [1,0,0,0,0,0,0,1],
+                    [0,1,0,0,0,0,1,0],
+                    [0,0,1,0,0,1,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,1,0,0,1,0,0],
+                    [0,1,0,0,0,0,1,0],
+                    [1,0,0,0,0,0,0,1]
+                ],
+                'Y': [
+                    [1,0,0,0,0,0,0,1],
+                    [0,1,0,0,0,0,1,0],
+                    [0,0,1,0,0,1,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0],
+                    [0,0,0,1,1,0,0,0]
+                ],
+                'Z': [
+                    [1,1,1,1,1,1,1,1],
+                    [0,0,0,0,0,0,1,0],
+                    [0,0,0,0,0,1,0,0],
+                    [0,0,0,0,1,0,0,0],
+                    [0,0,0,1,0,0,0,0],
+                    [0,0,1,0,0,0,0,0],
+                    [0,1,0,0,0,0,0,0],
+                    [1,1,1,1,1,1,1,1]
+                ]
+            };
+
+            const pattern = patterns[letra.toUpperCase()];
+            if (!pattern) return;
+
+            let numeroAleatorio = Math.floor(Math.random() * 9) + 1;
+
+            for(let i = 0; i < escala; i++) {
+                for(let j = 0; j < escala; j++) {
+                    if(pattern[i][j]) {
+                        matriz[posY + i][posX + j] = numeroAleatorio * 10;
+                    }
+                }
+            }
+        }
+
+        function desenharMatriz(matriz, cor) {
+            const tamanhoCell = 15;
+            const maxLinhas = Math.floor(canvas.height / tamanhoCell);
+            const maxColunas = Math.floor(canvas.width / tamanhoCell);
+
+            const linhasEfetivas = Math.min(matriz.length, maxLinhas);
+            const colunasEfetivas = Math.min(matriz[0].length, maxColunas);
+
+            const margemX = (canvas.width - colunasEfetivas * tamanhoCell) / 2;
+            const margemY = (canvas.height - linhasEfetivas * tamanhoCell) / 2;
+
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            for(let i = 0; i < linhasEfetivas; i++) {
+                for(let j = 0; j < colunasEfetivas; j++) {
+                    const x = margemX + j * tamanhoCell + tamanhoCell/2;
+                    const y = margemY + i * tamanhoCell + tamanhoCell/2;
+
+                    if (matriz[i][j] >= 10 && cor) {
+                        ctx.fillStyle = '#f00';
+                        ctx.fillRect(margemX + j * tamanhoCell, margemY + i * tamanhoCell, tamanhoCell, tamanhoCell);
+                    } else {
+                        ctx.fillStyle = '#fff';
+                        ctx.fillRect(margemX + j * tamanhoCell, margemY + i * tamanhoCell, tamanhoCell, tamanhoCell);
+                    }
+
+                    ctx.strokeStyle = '#eee';
+                    ctx.strokeRect(margemX + j * tamanhoCell, margemY + i * tamanhoCell, tamanhoCell, tamanhoCell);
+
+                    ctx.fillStyle = '#333';
+
+                    if (matriz[i][j] >= 10) {
+                        ctx.fillText(matriz[i][j] / 10, x, y);
+                    } else {
+                        ctx.fillText(matriz[i][j], x, y);
+                    }
+                }
+            }
+        }
+
+        function gerarNovaMatriz() {
+            matriz_gerada = false;
+            gerarImagem(true);
+        }
+
+        function gerarImagem(cor) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!matriz_gerada) {
+              matriz_gerada = gerarMatrizAleatoria(30, 60);
+            }
+
+            const matriz = JSON.parse(JSON.stringify(matriz_gerada));
+
+            const mensagem = document.getElementById('mensagem').value.toUpperCase();
+
+            let posX = 2; // Começando da segunda coluna
+            let posY = 10;
+
+            for(let letra of mensagem) {
+                if(letra === ' ') {
+                    posX += 9;
+                    continue;
+                }
+                desenharLetra(matriz, letra, posX, posY);
+                posX += 9;
+
+                if(posX > 90) {
+                    posX = 2; // Mantendo o início na segunda coluna ao quebrar linha
+                    posY += 9;
+                }
+            }
+
+            desenharMatriz(matriz, cor);
+        }
+
+        function salvarImagem() {
+            try {
+                gerarImagem(false);
+
+                const link = document.createElement('a');
+                link.download = `matriz_numeros_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+
+                gerarImagem(true);
+
+            } catch(e) {
+                console.error('Erro:', e);
+                alert('Erro ao salvar imagem');
+            }
+        }
+
+        window.onload = gerarImagem;
+    </script>
+</body>
+</html>
