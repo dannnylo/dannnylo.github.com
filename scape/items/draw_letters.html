@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Desenhando letras</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <style>
         canvas {
             border: 1px solid black;
@@ -20,7 +21,7 @@
             <div class="col-md-4">
               <textarea id="texto" class="form-control" placeholder="Digite seu texto aqui..." oninput="desenharLetras()" style="height: 100px;"></textarea>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-8">
               <div id="instrucoes" class="mt-3"></div>
             </div>
           </div>
@@ -42,7 +43,7 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Cores para os vértices
-        const cores = ['red', 'yellow', 'green', 'blue', 'purple', 'pink', 'gray'];
+        const cores = ['red', 'yellow', 'green', 'blue', 'purple', 'hotpink', 'gray'];
 
         // Desenhar a caixa
         ctx.lineWidth = 20; // Aumentei a largura da linha de 8 para 15
@@ -104,7 +105,6 @@
         desenharCirculo(250, 250, cores[6]);
 
 
-
         function desenharLetras() {
           const text = document.getElementById('texto').value.toUpperCase();
           document.getElementById('instrucoes').innerHTML = '';
@@ -114,60 +114,111 @@
             var dado = '';
 
             if (letra == 'A') {
-              dado = 'purple -> green -> red -> yellow -> blue -> gray -> green -> gray -> blue -> pink';
+              dado = ['purple', 'green', 'red', 'yellow', 'blue', 'gray', 'green', 'gray', 'blue', 'pink'];
             } else if (letra == 'B') {
-              dado = 'purple -> green -> red -> gay -> green -> gay -> purple';
+              dado = ['purple', 'green', 'red', 'gray', 'green', 'gray', 'purple'];
             } else if (letra == 'C') {
-              dado = 'pink -> purple -> green -> red -> yellow';
+              dado = ['pink', 'purple', 'green', 'red', 'yellow'];
             } else if (letra == 'D') {
-              dado = 'purple -> green -> red -> gray -> purple';
+              dado = ['purple', 'green', 'red', 'gray', 'purple'];
             } else if (letra == 'E') {
-              dado = 'pink -> purple -> green -> gray -> green -> red -> yellow';
+              dado = ['pink', 'purple', 'green', 'gray', 'green', 'red', 'yellow'];
             } else if (letra == 'F') {
-              dado = 'purple -> green -> gray -> green -> red -> yellow';
+              dado = ['purple', 'green', 'gray', 'green', 'red', 'yellow'];
             } else if (letra == 'G') {
-              dado = 'gray -> blue -> pink -> purple -> green -> red -> yellow';
+              dado = ['gray', 'blue', 'pink', 'purple', 'green', 'red', 'yellow'];
             } else if (letra == 'H') {
-              dado = 'purple -> green -> red -> green -> gray -> blue -> yellow -> blue -> pink';
+              dado = ['purple', 'green', 'red', 'green', 'gray', 'blue', 'yellow', 'blue', 'pink'];
             } else if (letra == 'I') { 
-              dado = 'red -> green -> purple';
+              dado = ['red', 'green', 'purple'];
             } else if (letra == 'J') {
-              dado = 'yellow -> blue -> pink -> purple -> green';
+              dado = ['yellow', 'blue', 'pink', 'purple', 'green'];
             } else if (letra == 'K') { //
-              dado = 'K';
+              dado = ['K'];
             } else if (letra == 'L') {
-              dado = 'red -> green -> purple -> pink';
+              dado = ['red', 'green', 'purple', 'pink'];
             } else if (letra == 'M') {
-              dado = 'purple -> green -> red -> gray -> yellow -> blue -> pink';
+              dado = ['purple', 'green', 'red', 'gray', 'yellow', 'blue', 'pink'];
             } else if (letra == 'N') {
-              dado = 'purple -> green -> red -> gray -> pink -> blue -> yellow';            
+              dado = ['purple', 'green', 'red', 'gray', 'pink', 'blue', 'yellow'];            
             } else if (letra == 'O') {
-              dado = 'purple -> green -> red -> yellow -> blue  -> pink -> purple';
+              dado = ['purple', 'green', 'red', 'yellow', 'blue ', 'pink', 'purple'];
             } else if (letra == 'P') {
-              dado = 'purple -> green -> red -> yellow -> blue -> gray -> green';
+              dado = ['purple', 'green', 'red', 'yellow', 'blue', 'gray', 'green'];
             } else if (letra == 'Q') {
-              dado = 'purple -> green -> red -> yellow -> blue  -> pink -> gray -> pink -> purple';
+              dado = ['purple', 'green', 'red', 'yellow', 'blue ', 'pink', 'gray', 'pink', 'purple'];
             } else if (letra == 'R') {
-              dado = 'purple -> green -> red -> yellow -> blue -> gray -> pink';
+              dado = ['purple', 'green', 'red', 'yellow', 'blue', 'gray', 'pink'];
             } else if (letra == 'S') {
-              dado = 'yellow -> red  -> green -> gray -> blue -> pink -> purple';
+              dado = ['yellow', 'red', 'green', 'gray', 'blue', 'pink', 'purple'];
             } else if (letra == 'T') {
-              dado = 'red -> yellow -> blue -> pink';
+              dado = ['red', 'yellow', 'blue', 'pink'];
             } else if (letra == 'U') {
-              dado = 'red -> green -> purple -> pink -> blue -> yellow';            
+              dado = ['red', 'green', 'purple', 'pink', 'blue', 'yellow'];            
             } else if (letra == 'V') {
-              dado = 'red -> gray -> yellow';
+              dado = ['red', 'gray', 'yellow'];
             } else if (letra == 'W') {
-              dado = 'green -> purple -> gray -> pink -> blue';
+              dado = ['green', 'purple', 'gray', 'pink', 'blue'];
             } else if (letra == 'X') {
-              dado = 'purple -> gray -> red -> gray -> yellow -> gray -> pink';
+              dado = ['purple', 'gray', 'red', 'gray', 'yellow', 'gray', 'pink'];
             } else if (letra == 'Y') {
-              dado = 'purple -> gray -> red -> gray -> yellow';
+              dado = ['purple', 'gray', 'red', 'gray', 'yellow'];
             } else if (letra == 'Z') {
-              dado = 'red -> yellow -> gray -> purple -> pink';
+              dado = ['red', 'yellow', 'gray', 'purple', 'pink'];
             }
+
+            document.getElementById('instrucoes').innerHTML += `${i + 1}.`;
+            let badges = {
+              'red': {
+                'class': 'text-bg-danger',
+                'style': ''
+              }, 
+              'yellow': {
+                'class': 'text-bg-warning',
+                'style': ''
+              }, 
+              'green': {
+                'class': 'text-bg-success',
+                'style': ''
+              }, 
+              'blue': {
+                'class': 'text-bg-primary',
+                'style': ''
+              }, 
+              'purple': {
+                'class': 'text-bg-primary',
+                'style': 'background-color: purple !important;'
+              }, 
+              'pink': {
+                'class': 'text-bg-primary',
+                'style': 'background-color: hotpink !important;'
+              }, 
+              'gray': {
+                'class': 'text-bg-secondary',
+                'style': ''
+              }
+            }
+            dado.forEach((cor, index) => {
+              let badge_class = '';
+              let arrow = ' -> ';
+
+              if (index == 0) {
+                arrow = ''
+              } 
+              if (badges[cor]) {
+
+              } else {
+                console.info(badges)
+                console.info([cor])
+              }
+
+              var badge = `<span class="badge ${badges[cor].class} rounded-pill" style="${badges[cor].style}">${cor}</span>`;
+
+              document.getElementById('instrucoes').innerHTML += `${arrow} ${badge}`;
+              
+            });
             
-            document.getElementById('instrucoes').innerHTML += `${i + 1}. ${dado} <br>`;
+            document.getElementById('instrucoes').innerHTML += `<br>`;
           }
         }
         function salvarImagem() {
