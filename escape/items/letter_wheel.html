@@ -59,7 +59,7 @@
 <body>
     <a href="../index.html" class="btn btn-primary">Voltar</a>
     <h1>Conexões de Letras</h1>
-    <canvas id="canvas" width="600" height="600"></canvas><br>
+    <canvas id="canvas" width="600" height="800"></canvas><br>
     <button onclick="desenhar()">Nova Conexão</button>
     <button onclick="imprimir()">Imprimir</button>
 
@@ -74,7 +74,7 @@
 
         function desenharBackgroundMedieval() {
           const cx = canvas.width / 2;
-          const cy = canvas.height / 2;
+          const cy = theme.top;
 
           // Desenhar o círculo externo (Borda)
           ctx.beginPath();
@@ -115,6 +115,62 @@
           ctx.stroke();
         }
 
+        function desenharBackgroundEgipcio() {
+            const cx = canvas.width / 2;
+            const cy = theme.top;
+
+            // Desenhar o círculo externo
+            ctx.beginPath();
+            ctx.arc(cx, cy, 274, 0, Math.PI * 2);
+            ctx.fillStyle = "#000"; // Dourado
+            ctx.fill();
+
+            // Desenhar o Ankh
+            ctx.beginPath();
+            ctx.strokeStyle = "gold"; // Marrom
+            ctx.lineWidth = 37;
+
+            // Parte superior (elipse)
+            ctx.ellipse(cx, cy, 250, 250, 0, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(cx - 120, cy + 280); // Ponto superior esquerdo
+            ctx.lineTo(cx - 27, cy + 300); // Ponto superior direito
+            ctx.lineTo(cx - 27, cy + 320); // Ponto inferior direito
+            ctx.lineTo(cx - 120, cy + 340); // Ponto inferior esquerdo
+            ctx.closePath(); // Fecha o paralelogramo
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#000"; // Marrom
+            ctx.fillStyle = "gold"; // Marrom
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(cx + 120, cy + 280); // Ponto superior esquerdo
+            ctx.lineTo(cx + 27, cy + 300); // Ponto superior direito
+            ctx.lineTo(cx + 27, cy + 320); // Ponto inferior direito
+            ctx.lineTo(cx + 120, cy + 340); // Ponto inferior esquerdo
+            ctx.closePath(); // Fecha o paralelogramo
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#000"; // Marrom
+            ctx.fillStyle = "gold"; // Marrom
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(cx + 25, cy + 270); // Ponto superior esquerdo
+            ctx.lineTo(cx - 25, cy + 270); // Ponto superior direito
+            ctx.lineTo(cx - 40, cy + 470); // Ponto inferior direito
+            ctx.lineTo(cx + 40, cy + 470); // Ponto inferior esquerdo
+            ctx.closePath(); // Fecha o paralelogramo
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#000"; // Marrom
+            ctx.fillStyle = "gold"; // Marrom
+            ctx.fill();
+            ctx.stroke();
+        }
+
         function desenharBackgroundDefault() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
@@ -122,6 +178,7 @@
         const themes = {
           'medieval': {
               name: 'medieval',
+              top: 300,
               background: '#8B4513',
               circle: '#555',
               circleStroke: '#000',
@@ -143,8 +200,33 @@
               },
               bgFunction: desenharBackgroundMedieval
           },
+          'egipcio': {
+              name: 'egipcio',
+              top: 300,
+              background: '#8B4513',
+              circle: '#555',
+              circleStroke: '#000',
+              circleWidth: 4,
+              innerCircle: '#555',
+              innerCircleStroke: '#000',
+              innerCircleWidth: 2,
+              config: {
+                  raio: 250,
+                  fonte: "24px Arial",
+                  corLinha: "#6B3A0A",
+                  espessura: 3,
+                  variacao: 50,
+                  espaco: 10,
+                  raioLetra: 18,
+                    raioLetraCor: "gold",
+                  raioLetraWidth: 0,
+                  minDistCentro: 300
+              },
+              bgFunction: desenharBackgroundEgipcio
+          },
           'default': {
               name: 'default',
+              top: 300,
               background: '#fff',
               circle: '#555',
               circleStroke: '#000',
@@ -244,7 +326,7 @@
 
         function desenhar() {
             const cx = canvas.width/2;
-            const cy = canvas.height/2;
+            const cy = theme.top;
 
             const pos = {};
             letras.forEach((l, i) => {

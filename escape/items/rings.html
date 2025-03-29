@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Mensagem aneis</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #f0f0f0;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 0 10px #0002;
+        }
+        textarea {
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="canvas" width="850" height="2000"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h1>Mensagem aneis</h1>
+            <textarea id="mensagem" placeholder="Digite sua mensagem aqui..." oninput="gerarImagem(true)"></textarea><br>
+            <button onclick="salvarImagem()">Salvar Imagem</button><br>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function gerarImagem(cor) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+            draw(ctx, 200, [0,0,1,1]);
+
+            draw(ctx, 700, [0,1,1,0]);
+            draw(ctx, 1300, [1,1,0,0]);
+        }
+
+        function draw(ctx, start, shoudFill) {
+            ctx.lineWidth = 2;
+
+            let mensagem = document.getElementById('mensagem').value.toUpperCase();
+            // mensagem = "dadadd\ndadadad\nAudioDestinations\ndadadadasd\nAudioDationNodeada";
+
+            ctx.font = '60px Arial';
+            ctx.fillStyle = 'black';
+            ctx.textAlign = 'center';
+
+            const linhas = mensagem.split('\n');
+            const linhaAltura = 50;
+            const inicioY = ((2 * start) - (linhas.length - 1) * linhaAltura) / 2;
+
+            linhas.forEach((linha, index) => {
+                const y = inicioY + index * linhaAltura;
+                ctx.fillText(linha, canvas.width / 2, y);
+            });
+
+
+            // Fora
+            if (shoudFill[0] == 0) {
+                ctx.beginPath();
+                ctx.lineWidth = 180;
+                ctx.strokeStyle = 'white';
+                ctx.arc(400, 1 * start, 300, 0, Math.PI * 2);
+                ctx.stroke();
+            } else {
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'black';
+                ctx.arc(400, 1 * start, 350, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            if (shoudFill[1] == 0) {
+                ctx.beginPath();
+                ctx.lineWidth = 120;
+                ctx.strokeStyle = 'white';
+                ctx.arc(400, 1 * start, 150, 0, Math.PI * 2);
+                ctx.stroke();
+            } else {
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'black';
+                ctx.arc(400, 1 * start, 211, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            if (shoudFill[2] == 0) {
+                ctx.beginPath();
+                ctx.lineWidth = 120;
+                ctx.strokeStyle = 'white';
+                ctx.arc(400, 1 * start, 150, 0, Math.PI * 2);
+                ctx.stroke();
+            } else {
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'black';
+                ctx.arc(400, 1 * start, 90, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            if (shoudFill[3] == 0) {
+                ctx.beginPath();
+                ctx.lineWidth = 120;
+                ctx.strokeStyle = 'white';
+                ctx.arc(400, 1 * start, 31, 0, Math.PI * 2);
+                ctx.stroke();
+            } else {
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'black';
+                ctx.arc(400, 1 * start, 90, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'black';
+            ctx.arc(400, 1 * start, 4, 0, Math.PI * 2);
+            ctx.stroke();
+
+
+        }
+
+        function salvarImagem() {
+            try {
+                gerarImagem(false);
+
+                const link = document.createElement('a');
+                link.download = `matriz_numeros_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+
+                gerarImagem(true);
+
+            } catch(e) {
+                console.error('Erro:', e);
+                alert('Erro ao salvar imagem');
+            }
+        }
+
+        window.onload = gerarImagem;
+    </script>
+</body>
+</html>

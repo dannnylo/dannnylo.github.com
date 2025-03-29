@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Mensagem aneis</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #f0f0f0;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 0 10px #0002;
+        }
+        textarea {
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="canvas" width="850" height="850"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h1>Mensagem Sequência</h1>
+            <textarea id="mensagem" placeholder="Digite sua mensagem aqui..." oninput="gerarImagem(true)"></textarea><br>
+            <button onclick="salvarImagem()">Salvar Imagem</button><br>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function gerarImagem(cor) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            let mensagem = document.getElementById('mensagem').value.toUpperCase();
+            const letras = mensagem.split('');
+
+            const matriz = [];
+            const tamanho = 20;
+
+            for (let i = 0; i < tamanho; i++) {
+                matriz[i] = [];
+                for (let j = 0; j < tamanho; j++) {
+                    matriz[i][j] = '.'; Math.floor(Math.random() * 10); // Preenche com números aleatórios de 0 a 9
+                }
+            }
+
+
+            letras.forEach((letra, index) => {
+                let x, y;
+                do {
+                    x = Math.floor(Math.random() * tamanho);
+                    y = Math.floor(Math.random() * tamanho);
+                } while (matriz[x][y] !== '.'); // Garante que a posição está vazia
+
+                matriz[x][y] = `${index + 1}.${letra}`; // Preenche a matriz com a letra e seu número
+            });
+
+            // Exemplo de renderização da matriz no canvas
+            const cellSize = canvas.width / tamanho;
+
+            for (let i = 0; i < tamanho; i++) {
+                for (let j = 0; j < tamanho; j++) {
+                    ctx.fillStyle = 'black';
+                    ctx.font = `${cellSize * 0.4}px Arial`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(matriz[i][j], j * cellSize + cellSize / 2, i * cellSize + cellSize / 2);
+
+                }
+            }
+
+        }
+
+        function salvarImagem() {
+            try {
+                gerarImagem(false);
+
+                const link = document.createElement('a');
+                link.download = `matriz_numeros_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+
+                gerarImagem(true);
+
+            } catch(e) {
+                console.error('Erro:', e);
+                alert('Erro ao salvar imagem');
+            }
+        }
+
+        window.onload = gerarImagem;
+    </script>
+</body>
+</html>

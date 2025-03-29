@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagem com Filtro Vermelho</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #f0f0f0;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 0 10px #0002;
+        }
+        textarea {
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #ee3333;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+    <h1>Mensagem em labirinto</h1>
+    <textarea id="mensagem" placeholder="Digite sua mensagem secreta aqui..." oninput="gerarImagem()">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</textarea><br>
+    <label>
+        <input type="checkbox" id="mostrarCaminho" onchange="gerarImagem()"> Mostrar Caminho
+    </label>
+
+    <button onclick="salvarImagem()">Salvar Imagem</button><br>
+    <canvas id="canvas" width="800" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const pathTotal = [];
+        let msg = [];
+        let showPath = false;
+
+        function gerarImagem() {
+            let mensagem = document.getElementById('mensagem').value.toUpperCase();
+            showPath = document.getElementById('mostrarCaminho').checked;
+
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Desenha um labirinto simples no canvas
+            const cellSize = 40; // Tamanho de cada célula do labirinto
+            const rows = Math.floor(canvas.height / cellSize);
+            const cols = Math.floor(canvas.width / cellSize);
+            let l = 0;
+
+
+            // Função para desenhar uma célula com paredes
+            function drawCell(x, y, walls, isPath, path) {
+                const startX = x * cellSize;
+                const startY = y * cellSize;
+
+                // // Pinta a célula de azul se for parte do caminho
+                if (isPath && showPath) {
+                    ctx.fillStyle = '#0000FF';
+                    ctx.fillRect(startX, startY, cellSize, cellSize);
+                }
+
+                // Pinta a primeira célula de vermelho
+                if (x === 0 && y === 0) {
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillRect(startX, startY, cellSize, cellSize);
+                }
+
+                // Pinta a última célula de vermelho
+                if (x === cols - 1 && y === rows - 1) {
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillRect(startX, startY, cellSize, cellSize);
+                }
+
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 2;
+
+                // Escreve as coordenadas no centro de cada célula
+                ctx.fillStyle = '#000';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                if (isPath) {
+                    var i = path.findIndex(([px, py]) => px === y && py === x);
+                    ctx.fillText(`${msg[i] || '' }`, startX + cellSize / 2, startY + cellSize / 2);
+                } else {
+                    const randomLetter = Math.random() < 0.5 ? " " : String.fromCharCode(65 + Math.floor(Math.random() * 26));
+                    ctx.fillText(`${randomLetter}`, startX + cellSize / 2, startY + cellSize / 2);
+                }
+
+                // Desenha as paredes com base no array walls [top, right, bottom, left]
+                if (walls[0]) { // Top
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(startX + cellSize, startY);
+                    ctx.stroke();
+                }
+                if (walls[1]) { // Right
+                    ctx.beginPath();
+                    ctx.moveTo(startX + cellSize, startY);
+                    ctx.lineTo(startX + cellSize, startY + cellSize);
+                    ctx.stroke();
+                }
+                if (walls[2]) { // Bottom
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY + cellSize);
+                    ctx.lineTo(startX + cellSize, startY + cellSize);
+                    ctx.stroke();
+                }
+                if (walls[3]) { // Left
+                    ctx.beginPath();
+                    ctx.moveTo(startX, startY);
+                    ctx.lineTo(startX, startY + cellSize);
+                    ctx.stroke();
+                }
+            }
+
+            // Função para gerar um labirinto usando o algoritmo de "Depth-First Search"
+            function generateMaze(rows, cols) {
+                const maze = Array.from({ length: rows }, () =>
+                    Array.from({ length: cols }, () => [true, true, true, true]) // Todas as paredes presentes inicialmente
+                );
+
+                const visited = Array.from({ length: rows }, () =>
+                    Array.from({ length: cols }, () => false)
+                );
+
+                const stack = [];
+                const directions = [
+                    [-1, 0, 0, 2], // Top
+                    [0, 1, 1, 3],  // Right
+                    [1, 0, 2, 0],  // Bottom
+                    [0, -1, 3, 1]  // Left
+                ];
+
+                function isValid(x, y) {
+                    return x >= 0 && y >= 0 && x < rows && y < cols && !visited[x][y];
+                }
+
+                function carvePath(x, y) {
+                    visited[x][y] = true;
+                    stack.push([x, y]);
+
+                    while (stack.length > 0) {
+                        const [cx, cy] = stack[stack.length - 1];
+                        const neighbors = [];
+
+                        for (const [dx, dy, wall, oppositeWall] of directions) {
+                            const nx = cx + dx;
+                            const ny = cy + dy;
+
+                            if (isValid(nx, ny)) {
+                                neighbors.push([nx, ny, wall, oppositeWall]);
+                            }
+                        }
+
+                        if (neighbors.length > 0) {
+                            const [nx, ny, wall, oppositeWall] = neighbors[Math.floor(Math.random() * neighbors.length)];
+                            maze[cx][cy][wall] = false; // Remove a parede atual
+                            maze[nx][ny][oppositeWall] = false; // Remove a parede oposta
+                            visited[nx][ny] = true;
+                            stack.push([nx, ny]);
+                        } else {
+                            stack.pop();
+                        }
+                    }
+                }
+
+                carvePath(0, 0); // Começa no canto superior esquerdo
+
+                // Define a entrada (canto superior esquerdo) e a saída (canto inferior direito)
+                maze[0][0][3] = false; // Remove a parede esquerda da célula inicial
+                maze[rows - 1][cols - 1][1] = false; // Remove a parede direita da célula final
+
+                return maze;
+            }
+
+            // Função para encontrar o caminho entre entrada e saída
+            function findPath(maze, rows, cols) {
+                const path = [];
+                const visited = Array.from({ length: rows }, () =>
+                    Array.from({ length: cols }, () => false)
+                );
+
+                function dfs(x, y) {
+                    if (x === rows - 1 && y === cols - 1) {
+                        path.push([x, y]);
+                        pathTotal.push(`${x}${y}`);
+                        return true;
+                    }
+
+                    if (visited[x][y]) return false;
+
+                    visited[x][y] = true;
+                    path.push([x, y]);
+
+
+                    pathTotal.push(`${x}${y}`);
+
+                    // Direções ordenadas: Top, Right, Bottom, Left
+                    const directions = [
+                        [-1, 0, 0], // Top
+                        [0, 1, 1],  // Right
+                        [1, 0, 2],  // Bottom
+                        [0, -1, 3]  // Left
+                    ];
+
+                    for (const [dx, dy, wall] of directions) {
+                        const nx = x + dx;
+                        const ny = y + dy;
+
+                        if (
+                            nx >= 0 && ny >= 0 && nx < rows && ny < cols &&
+                            !visited[nx][ny] && !maze[x][y][wall]
+                        ) {
+                            if (dfs(nx, ny)) return true;
+                        }
+                    }
+
+                    path.pop();
+                    pathTotal.pop();
+                    return false;
+                }
+
+                dfs(0, 0);
+
+                return path;
+            }
+
+            function randomSpaces(message, size) {
+                const array = ["", "", "", "", ""];
+                let caracteres = message.replace(/\s/g, "").split(""); // Remove espaços e separa em caracteres
+
+                while (array.length < size) {
+                    if (caracteres.length > 0) {
+                        array.push(caracteres.shift());
+                    } else {
+                        array.push(" "); // Preenche com espaço se a mensagem acabar
+                    }
+
+                    // 30% de chance de adicionar um espaço
+                    if (array.length < size && Math.random() < 0.7) {
+                        array.push(" ");
+                    }
+                }
+
+                // Garante exatamente 200 posições
+                array.length = size;
+                return array;
+            }
+
+            // Gera o labirinto e desenha no canvas
+            const maze = generateMaze(rows, cols);
+            const path = findPath(maze, rows, cols);
+
+            msg = randomSpaces(mensagem, path.length);
+
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const isPath = path.some(([px, py]) => px === row && py === col);
+                    drawCell(col, row, maze[row][col], isPath, path);
+                }
+            }
+
+        }
+
+        function salvarImagem() {
+            try {
+                const link = document.createElement('a');
+                link.download = `mensagem_secreta_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch(e) {
+                console.error('Erro:', e);
+                alert('Erro ao salvar imagem');
+            }
+        }
+
+        // Gera imagem inicial
+        window.onload = gerarImagem;
+    </script>
+</body>
+</html>
