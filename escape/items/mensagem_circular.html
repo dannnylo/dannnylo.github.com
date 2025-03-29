@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quebra cabeça</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #f0f0f0;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 0 10px #0002;
+        }
+        textarea {
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #ee3333;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+    <h1>Quebra cabeça</h1>
+    <textarea id="mensagem" placeholder="Digite sua mensagem secreta aqui..." oninput="gerarImagem()">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</textarea><br>
+
+
+    <button onclick="salvarImagem()">Salvar Imagem</button><br>
+    <canvas id="canvas" width="800" height="400"></canvas>
+    <script>
+        function gerarImagem() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const mensagem = document.getElementById('mensagem').value;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const fontSize = 30;
+            ctx.font = `${fontSize}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            const x = canvas.width / 2;
+            const y = canvas.height / 2;
+
+            for (let i = 0; i < mensagem.length; i++) {
+                const char = mensagem[i];
+                const angle = (Math.PI * 2 / mensagem.length) * i;
+                const radius = Math.min(canvas.width, canvas.height) / 3;
+                const xPos = x + Math.cos(angle) * radius;
+                const yPos = y + Math.sin(angle) * radius;
+
+                ctx.fillStyle = `hsl(${(i / mensagem.length) * 360}, 100%, 50%)`;
+                ctx.fillText(char, xPos, yPos);
+            }
+        }
+
+
+        function salvarImagem() {
+            try {
+                const link = document.createElement('a');
+                link.download = `mensagem_secreta_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch(e) {
+                console.error('Erro:', e);
+                alert('Erro ao salvar imagem');
+            }
+        }
+
+        // Gera imagem inicial
+        window.onload = gerarImagem;
+    </script>
+</body>
+</html>

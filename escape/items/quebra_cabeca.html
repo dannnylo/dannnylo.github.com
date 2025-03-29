@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quebra cabeça</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #f0f0f0;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 0 10px #0002;
+        }
+        textarea {
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #ee3333;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+    <h1>Quebra cabeça</h1>
+
+
+    <button onclick="salvarImagem()">Salvar Imagem</button><br>
+    <canvas id="canvas" width="800" height="800"></canvas>
+    <script>
+        function gerarImagem() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            // Define as dimensões das peças do quebra-cabeça
+            const pieceWidth = 200;
+            const pieceHeight = 200;
+
+            // Carrega uma imagem para o quebra-cabeça
+            const img = new Image();
+            img.src = 'https://picsum.photos/200'; // Substitua por uma URL de imagem válida
+            img.onload = () => {
+                // Desenha a imagem no canvas
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // Desenha as linhas do quebra-cabeça
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+
+                // Linhas verticais
+                for (let x = pieceWidth; x < canvas.width; x += pieceWidth) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+
+                // Linhas horizontais
+                for (let y = pieceHeight; y < canvas.height; y += pieceHeight) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+
+                // heart(ctx);
+                star(ctx)
+
+            };
+        }
+
+        function heart(ctx){
+            // Desenha um coração no meio da imagem
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const heartSize = 150;
+
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.bezierCurveTo(
+                centerX - heartSize, centerY - heartSize,
+                centerX - heartSize * 1.5, centerY + heartSize / 2,
+                centerX, centerY + heartSize
+            );
+            ctx.bezierCurveTo(
+                centerX + heartSize * 1.5, centerY + heartSize / 2,
+                centerX + heartSize, centerY - heartSize,
+                centerX, centerY
+            );
+            ctx.fill();
+        }
+
+        function star(ctx) {
+            // Desenha uma estrela no meio da imagem
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const starSize = 150;
+
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY - starSize);
+            for (let i = 1; i <= 5; i++) {
+                ctx.lineTo(
+                    centerX + starSize * Math.sin((i * 4 * Math.PI) / 5),
+                    centerY - starSize * Math.cos((i * 4 * Math.PI) / 5)
+                );
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+
+
+        function salvarImagem() {
+            try {
+                const link = document.createElement('a');
+                link.download = `mensagem_secreta_${new Date().toISOString().slice(0,10)}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch(e) {
+                console.error('Erro:', e);
+                alert('Erro ao salvar imagem');
+            }
+        }
+
+        // Gera imagem inicial
+        window.onload = gerarImagem;
+    </script>
+</body>
+</html>

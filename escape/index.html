@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escape room</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .card {
+            background-color: #1e1e1e;
+            border: 1px solid #333333;
+        }
+        .card-title, .card-text {
+            color: #ffffff;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -65,12 +82,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Morse Code</h5>
                         <p class="card-text">Gere uma mensagem escondida em código Morse.</p>
                         <a href="./items/morse.html" class="btn btn-primary">Ver</a>
+                    </div>
+                </div>
+            </div>
+
+             <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Labirinto</h5>
+                        <p class="card-text">Resolva um labirinto para encontrar a mensagem escondida.</p>
+                        <a href="./items/labirinto.html" class="btn btn-primary">Ver</a>
                     </div>
                 </div>
             </div>

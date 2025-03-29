@@ -46,7 +46,7 @@
 <body>
     <a href="../index.html" class="btn btn-primary">Voltar</a>
     <h1>Mensagem em labirinto</h1>
-    <textarea id="mensagem" placeholder="Digite sua mensagem secreta aqui..." oninput="gerarImagem()">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</textarea><br>
+    <textarea id="mensagem" placeholder="Digite sua mensagem secreta aqui..." oninput="gerarImagem()"></textarea><br>
     <label>
         <input type="checkbox" id="mostrarCaminho" onchange="gerarImagem()"> Mostrar Caminho
     </label>
@@ -112,7 +112,7 @@
                     var i = path.findIndex(([px, py]) => px === y && py === x);
                     ctx.fillText(`${msg[i] || '' }`, startX + cellSize / 2, startY + cellSize / 2);
                 } else {
-                    const randomLetter = Math.random() < 0.5 ? " " : String.fromCharCode(65 + Math.floor(Math.random() * 26));
+                    const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
                     ctx.fillText(`${randomLetter}`, startX + cellSize / 2, startY + cellSize / 2);
                 }
 
@@ -255,25 +255,22 @@
                 return path;
             }
 
-            function randomSpaces(message, size) {
-                const array = ["", "", "", "", ""];
-                let caracteres = message.replace(/\s/g, "").split(""); // Remove espaços e separa em caracteres
+            function randomLetters(mensagem, length) {
+                const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                const array = [];
 
-                while (array.length < size) {
-                    if (caracteres.length > 0) {
-                        array.push(caracteres.shift());
-                    } else {
-                        array.push(" "); // Preenche com espaço se a mensagem acabar
-                    }
-
-                    // 30% de chance de adicionar um espaço
-                    if (array.length < size && Math.random() < 0.7) {
-                        array.push(" ");
-                    }
+                for (let i = 0; i < length; i++) {
+                    const randomIndex = Math.floor(Math.random() * letters.length);
+                    array.push(letters[randomIndex]);
                 }
 
-                // Garante exatamente 200 posições
-                array.length = size;
+                var middle = parseInt(length/2);
+                const start = Math.max(0, middle - Math.floor(mensagem.length / 2));
+                for (let i = 0; i < mensagem.length; i++) {
+                    if (start + i < length) {
+                        array[start + i] = mensagem[i];
+                    }
+                }
                 return array;
             }
 
@@ -281,7 +278,8 @@
             const maze = generateMaze(rows, cols);
             const path = findPath(maze, rows, cols);
 
-            msg = randomSpaces(mensagem, path.length);
+            // msg = randomSpaces(mensagem, path.length);
+            msg = randomLetters(mensagem, path.length);
 
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
