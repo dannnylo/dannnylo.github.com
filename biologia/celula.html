@@ -2,7 +2,7 @@
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#193e33"><title>Cell Lab — Cell parts</title>
 <style>
-:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#193e33;background:#f7f8f2}*{box-sizing:border-box}body{margin:0}button,select,a{font:inherit}button,select{cursor:pointer}button,a,select{touch-action:manipulation}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #b98d38;outline-offset:3px}button{border:1px solid #cbd7c2;border-radius:9px;padding:11px 16px;background:#fff;color:#244d3b}button:hover{background:#edf2e5}button:disabled{cursor:default;opacity:.65}header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 4vw;border-bottom:1px solid #dce4d4}header a{color:#335b43;text-decoration:none;font-weight:600}select{margin-left:8px;border:1px solid #cbd7c2;padding:7px;border-radius:6px;background:white;color:#193e33}main{max-width:1400px;margin:auto;padding:26px 4vw}.eyebrow{letter-spacing:2px;font-size:11px;font-weight:700;color:#6b8356}h1{font-size:clamp(28px,4vw,44px);letter-spacing:-1.4px;margin:10px 0}p{line-height:1.6}.intro{color:#68765f;margin:0 0 22px}.toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap;margin-bottom:20px}.modes{display:flex;gap:7px}.selected,.primary{background:#244d3b!important;color:white!important;border-color:#244d3b!important}.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:24px}.sidebar,.activity{background:#fffef9;border:1px solid #dce4d4;border-radius:16px;padding:22px}.sidebar h2{font-size:12px;letter-spacing:1px;margin:0 0 8px}.progress{font-size:14px;color:#6b7e5e;margin:0 0 12px}progress{width:100%;height:7px;accent-color:#587b46}#parts{display:flex;flex-direction:column;gap:5px;margin-top:15px}#parts button{text-align:left;padding:8px 10px;font-size:14px;display:flex;justify-content:space-between;gap:8px}#parts button span:last-child{color:#749157}.activity{display:flex;flex-direction:column;justify-content:center;min-height:480px;padding:clamp(22px,4vw,48px)}.counter{font-size:13px;color:#7b886e;font-variant-numeric:tabular-nums}.card-name{font-size:clamp(26px,3.5vw,40px);line-height:1.15;margin:18px 0;overflow-wrap:anywhere}.structure-icon{width:66px;height:66px;background:#e6edda;color:#6e8b54;display:grid;place-items:center;border-radius:18px;font-size:35px;margin:14px 0}.function{font-size:20px;line-height:1.6;max-width:750px}.cue{background:#edf3e4;border-radius:10px;padding:16px;margin:18px 0}.cue p{margin:6px 0 0;font-size:16px}.label{font-size:10px;font-weight:750;letter-spacing:1.5px;color:#6c815a}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.navigation{display:flex;justify-content:space-between;gap:10px;margin-top:28px;padding-top:20px;border-top:1px solid #dce4d4}.muted{color:#79876e}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.answers button{min-height:70px;text-align:left;line-height:1.4}.answers .correct{background:#dfedd3;border:2px solid #547d3f;color:#274220;opacity:1}.answers .wrong{background:#f8e5dc;border:2px solid #a65338;color:#6b321f;opacity:1}.feedback{min-height:28px;margin-top:18px;font-size:17px;line-height:1.5}.result-number{font-size:64px;font-weight:750;letter-spacing:-3px;color:#5c7e47}.note{font-size:12px;color:#78846d;max-width:1000px;margin:22px 0 0}.saved{font-size:12px;color:#74846a}.activity h2:focus{outline:none}@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{order:2}#parts{display:grid;grid-template-columns:1fr 1fr}.activity{min-height:400px}.function{font-size:18px}}@media(max-width:520px){header{font-size:13px;padding:14px 18px}header label>span{display:none}main{padding:22px 18px}.answers{grid-template-columns:1fr}.toolbar{align-items:flex-start}.modes button{font-size:14px;padding:10px}.activity{padding:22px}.navigation button{padding:10px;font-size:14px}.card-name{font-size:27px}#parts{grid-template-columns:1fr}}
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#193e33;background:#f7f8f2}*{box-sizing:border-box}body{margin:0}button,select,a{font:inherit}button,select{cursor:pointer}button,a,select{touch-action:manipulation}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #b98d38;outline-offset:3px}button{border:1px solid #cbd7c2;border-radius:9px;padding:11px 16px;background:#fff;color:#244d3b}button:hover{background:#edf2e5}button:disabled{cursor:default;opacity:.65}header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 4vw;border-bottom:1px solid #dce4d4}header a{color:#335b43;text-decoration:none;font-weight:600}select{margin-left:8px;border:1px solid #cbd7c2;padding:7px;border-radius:6px;background:white;color:#193e33}main{max-width:1400px;margin:auto;padding:26px 4vw}.eyebrow{letter-spacing:2px;font-size:11px;font-weight:700;color:#6b8356}h1{font-size:clamp(28px,4vw,44px);letter-spacing:-1.4px;margin:10px 0}p{line-height:1.6}.intro{color:#68765f;margin:0 0 22px}.toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap;margin-bottom:20px}.modes{display:flex;gap:7px}.selected,.primary{background:#244d3b!important;color:white!important;border-color:#244d3b!important}.layout{display:grid;grid-template-columns:310px minmax(0,1fr);gap:24px}.sidebar,.activity{background:#fffef9;border:1px solid #dce4d4;border-radius:16px;padding:22px}.sidebar h2{font-size:12px;letter-spacing:1px;margin:0 0 8px}.progress{font-size:14px;color:#6b7e5e;margin:0 0 12px}progress{width:100%;height:7px;accent-color:#587b46}#parts{display:flex;flex-direction:column;gap:5px;margin-top:15px}#parts button{text-align:left;padding:8px 10px;font-size:14px;display:flex;justify-content:space-between;gap:8px}#parts button .part-status{color:#749157;font-size:10px;white-space:nowrap;align-self:center}.activity{display:flex;flex-direction:column;justify-content:center;min-height:480px;padding:clamp(22px,4vw,48px)}.counter{font-size:13px;color:#7b886e;font-variant-numeric:tabular-nums}.card-name{font-size:clamp(26px,3.5vw,40px);line-height:1.15;margin:18px 0;overflow-wrap:anywhere}.structure-icon{width:66px;height:66px;background:#e6edda;color:#6e8b54;display:grid;place-items:center;border-radius:18px;font-size:35px;margin:14px 0}.function{font-size:20px;line-height:1.6;max-width:750px}.cue{background:#edf3e4;border-radius:10px;padding:16px;margin:18px 0}.cue p{margin:6px 0 0;font-size:16px}.label{font-size:10px;font-weight:750;letter-spacing:1.5px;color:#6c815a}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.navigation{display:flex;justify-content:space-between;gap:10px;margin-top:28px;padding-top:20px;border-top:1px solid #dce4d4}.muted{color:#79876e}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.answers button{min-height:70px;text-align:left;line-height:1.4}.answers .correct{background:#dfedd3;border:2px solid #547d3f;color:#274220;opacity:1}.answers .wrong{background:#f8e5dc;border:2px solid #a65338;color:#6b321f;opacity:1}.feedback{min-height:28px;margin-top:18px;font-size:17px;line-height:1.5}.result-number{font-size:64px;font-weight:750;letter-spacing:-3px;color:#5c7e47}.note{font-size:12px;color:#78846d;max-width:1000px;margin:22px 0 0}.saved{font-size:12px;color:#74846a}.activity h2:focus{outline:none}@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{order:2}#parts{display:grid;grid-template-columns:1fr 1fr}.activity{min-height:400px}.function{font-size:18px}}@media(max-width:520px){#parts button .part-status{font-size:9px}header{font-size:13px;padding:14px 18px}header label>span{display:none}main{padding:22px 18px}.answers{grid-template-columns:1fr}.toolbar{align-items:flex-start}.modes button{font-size:14px;padding:10px}.activity{padding:22px}.navigation button{padding:10px;font-size:14px}.card-name{font-size:27px}#parts{grid-template-columns:1fr}}
 
 /* Diagramas vetoriais: cada estrutura é uma região interativa. */
 .layout{grid-template-columns:210px minmax(0,1.35fr) minmax(260px,1fr);align-items:start}
@@ -24,7 +24,7 @@
 @media(prefers-reduced-motion:reduce){.cell-part .organ{transition:none}}
 </style></head>
 <body><header><a href="./" data-text="back">← Back to the game</a><label><span data-text="language">Language</span><select id="language" aria-label="Language"><option value="en">English</option><option value="pt">Português</option></select></label></header>
-<main><div class="eyebrow" data-text="eyebrow">CELL LAB · STUDY AND PRACTICE</div><h1 data-text="heading">Get to know the cell.</h1><p class="intro" data-text="intro">Learn the function, make an association and test your memory.</p>
+<main><div class="eyebrow" data-text="eyebrow">CELL LAB · STUDY AND PRACTICE</div><h1 data-text="heading">Get to know the cell.</h1><p class="intro" data-text="intro">Start with five key cell parts. Then explore extra structures, learn their functions and test your memory.</p>
 <div class="toolbar"><div class="modes"><button id="study-mode" data-text="study" aria-pressed="true">Study cards</button><button id="quiz-mode" data-text="quiz" aria-pressed="false">Test your memory</button><button id="image-game-mode" data-text="imageGame" aria-pressed="false">Image game</button></div><label><span data-text="filter">Structures in</span><select id="filter"><option value="all" data-text="all">All</option><option value="animal" data-text="animal">Animal cell</option><option value="plant" data-text="plant">Plant cell</option></select></label></div>
 <div class="layout"><aside class="sidebar"><h2 data-text="parts">PARTS OF THE CELL</h2><p class="progress" id="progress-text"></p><progress id="progress" max="12" value="0" aria-label="Memorized"></progress><nav id="parts"></nav><p class="saved" data-text="saved">Your study progress is saved in this browser.</p></aside><section class="diagram-panel" id="diagram"></section><section class="activity" id="activity" aria-label="Study activity"></section></div><p class="note" data-text="scope"></p></main>
 <script>
@@ -34,168 +34,180 @@ const PARTS = [
     "type": "both",
     "pt": {
       "name": "Membrana plasmática",
-      "function": "Controla a entrada e a saída de substâncias e delimita a célula.",
-      "hint": "Pense em uma portaria com entrada controlada."
+      "function": "Envolve a célula e controla o que entra e sai.",
+      "hint": "Pense nela como a porta da célula."
     },
     "en": {
       "name": "Cell membrane",
-      "function": "Controls what enters and leaves the cell and forms its boundary.",
-      "hint": "Think of a gate with controlled entry."
-    }
-  },
-  {
-    "id": "cytoplasm",
-    "type": "both",
-    "pt": {
-      "name": "Citoplasma",
-      "function": "Região entre a membrana e o núcleo, com citosol e estruturas celulares; abriga muitas reações químicas.",
-      "hint": "É o ambiente de trabalho dentro da célula."
+      "function": "Surrounds the cell and controls what enters and leaves.",
+      "hint": "Think of it as the cell’s door."
     },
-    "en": {
-      "name": "Cytoplasm",
-      "function": "The region between the membrane and nucleus, containing cytosol and cellular structures; many chemical reactions occur here.",
-      "hint": "It is the workspace inside the cell."
-    }
-  },
-  {
-    "id": "nucleus",
-    "type": "both",
-    "pt": {
-      "name": "Núcleo",
-      "function": "Abriga a maior parte do DNA da célula e participa do controle da expressão dos genes.",
-      "hint": "Pense em uma biblioteca de instruções."
-    },
-    "en": {
-      "name": "Nucleus",
-      "function": "Houses most of the cell’s DNA and helps regulate gene expression.",
-      "hint": "Think of a library of instructions."
-    }
-  },
-  {
-    "id": "mitochondria",
-    "type": "both",
-    "pt": {
-      "name": "Mitocôndria",
-      "function": "Produz grande parte do ATP durante a respiração celular aeróbica.",
-      "hint": "ATP é uma fonte de energia para processos celulares."
-    },
-    "en": {
-      "name": "Mitochondrion",
-      "function": "Produces much of the cell’s ATP during aerobic cellular respiration.",
-      "hint": "ATP supplies energy for cellular processes."
-    }
-  },
-  {
-    "id": "ribosome",
-    "type": "both",
-    "pt": {
-      "name": "Ribossomo",
-      "function": "Sintetiza proteínas, unindo aminoácidos conforme a informação do RNA mensageiro.",
-      "hint": "Pense em uma máquina de montar proteínas."
-    },
-    "en": {
-      "name": "Ribosome",
-      "function": "Builds proteins by joining amino acids according to messenger RNA instructions.",
-      "hint": "Think of a protein assembly machine."
-    }
-  },
-  {
-    "id": "rough-er",
-    "type": "both",
-    "pt": {
-      "name": "Retículo endoplasmático rugoso",
-      "function": "Com ribossomos associados, participa da produção e do processamento de proteínas destinadas à secreção e a membranas.",
-      "hint": "Rugoso = ribossomos na superfície."
-    },
-    "en": {
-      "name": "Rough endoplasmic reticulum",
-      "function": "With attached ribosomes, helps produce and process proteins destined for secretion and membranes.",
-      "hint": "Rough = ribosomes on the surface."
-    }
-  },
-  {
-    "id": "smooth-er",
-    "type": "both",
-    "pt": {
-      "name": "Retículo endoplasmático liso",
-      "function": "Participa da síntese de lipídios, da desintoxicação e do armazenamento de cálcio, dependendo da célula.",
-      "hint": "Liso lembra lipídios; não tem ribossomos aderidos."
-    },
-    "en": {
-      "name": "Smooth endoplasmic reticulum",
-      "function": "Helps synthesize lipids, detoxify substances and store calcium, depending on the cell.",
-      "hint": "Smooth means no attached ribosomes; remember lipids."
-    }
-  },
-  {
-    "id": "golgi",
-    "type": "both",
-    "pt": {
-      "name": "Complexo de Golgi",
-      "function": "Modifica, organiza e encaminha proteínas e lipídios em vesículas para seus destinos.",
-      "hint": "Pense em um centro de embalagem e distribuição."
-    },
-    "en": {
-      "name": "Golgi apparatus",
-      "function": "Modifies, sorts and sends proteins and lipids to their destinations in vesicles.",
-      "hint": "Think of a packaging and distribution center."
-    }
-  },
-  {
-    "id": "lysosome",
-    "type": "animal",
-    "pt": {
-      "name": "Lisossomo",
-      "function": "Contém enzimas que digerem materiais e ajudam a reciclar componentes celulares.",
-      "hint": "Pense em uma central de digestão e reciclagem."
-    },
-    "en": {
-      "name": "Lysosome",
-      "function": "Contains enzymes that digest materials and help recycle cellular components.",
-      "hint": "Think of a digestion and recycling center."
-    }
-  },
-  {
-    "id": "vacuole",
-    "type": "plant",
-    "pt": {
-      "name": "Vacúolo central",
-      "function": "Armazena água e outras substâncias e ajuda a manter a pressão de turgor na célula vegetal.",
-      "hint": "Pense em um reservatório que também ajuda na sustentação."
-    },
-    "en": {
-      "name": "Central vacuole",
-      "function": "Stores water and other substances and helps maintain turgor pressure in plant cells.",
-      "hint": "Think of a reservoir that also helps keep the cell firm."
-    }
-  },
-  {
-    "id": "chloroplast",
-    "type": "plant",
-    "pt": {
-      "name": "Cloroplasto",
-      "function": "Realiza a fotossíntese, convertendo energia luminosa em energia química usada na produção de açúcares.",
-      "hint": "Pense em uma fábrica de açúcares movida a luz."
-    },
-    "en": {
-      "name": "Chloroplast",
-      "function": "Performs photosynthesis, converting light energy into chemical energy used to make sugars.",
-      "hint": "Think of a light-powered sugar factory."
-    }
+    "core": true
   },
   {
     "id": "wall",
     "type": "plant",
     "pt": {
       "name": "Parede celular",
-      "function": "Camada externa à membrana que oferece proteção e sustentação; nas plantas, contém celulose.",
-      "hint": "Pense em uma estrutura firme por fora da membrana."
+      "function": "Fica do lado de fora da membrana e dá proteção e sustentação à célula vegetal.",
+      "hint": "Pense nela como uma parede de proteção."
     },
     "en": {
       "name": "Cell wall",
-      "function": "A layer outside the membrane that provides protection and support; in plants, it contains cellulose.",
-      "hint": "Think of a firm supporting layer outside the membrane."
-    }
+      "function": "Outside the membrane, it protects and supports plant cells.",
+      "hint": "Think of it as a protective wall."
+    },
+    "core": true
+  },
+  {
+    "id": "nucleus",
+    "type": "both",
+    "pt": {
+      "name": "Núcleo",
+      "function": "Guarda grande parte do DNA, que contém instruções importantes para a célula.",
+      "hint": "Pense no núcleo como um lugar que guarda instruções."
+    },
+    "en": {
+      "name": "Nucleus",
+      "function": "Holds most of the DNA, which contains important instructions for the cell.",
+      "hint": "Think of the nucleus as a place that keeps instructions."
+    },
+    "core": true
+  },
+  {
+    "id": "mitochondria",
+    "type": "both",
+    "pt": {
+      "name": "Mitocôndria",
+      "function": "Ajuda a célula a obter energia dos alimentos para realizar suas atividades.",
+      "hint": "Pense na mitocôndria como uma usina de energia."
+    },
+    "en": {
+      "name": "Mitochondrion",
+      "function": "Helps the cell get energy from food to carry out its activities.",
+      "hint": "Think of a mitochondrion as a power station."
+    },
+    "core": true
+  },
+  {
+    "id": "chloroplast",
+    "type": "plant",
+    "pt": {
+      "name": "Cloroplasto",
+      "function": "Capta a luz do Sol para a planta produzir seu alimento na fotossíntese.",
+      "hint": "Pense no cloroplasto como um painel que capta luz."
+    },
+    "en": {
+      "name": "Chloroplast",
+      "function": "Captures sunlight so the plant can make food through photosynthesis.",
+      "hint": "Think of a chloroplast as a light-catching panel."
+    },
+    "core": true
+  },
+  {
+    "id": "cytoplasm",
+    "type": "both",
+    "pt": {
+      "name": "Citoplasma",
+      "function": "Material gelatinoso que preenche a célula e onde ficam suas estruturas.",
+      "hint": "Pense no recheio dentro da célula."
+    },
+    "en": {
+      "name": "Cytoplasm",
+      "function": "A jelly-like material that fills the cell and holds its structures.",
+      "hint": "Think of the filling inside the cell."
+    },
+    "core": false
+  },
+  {
+    "id": "ribosome",
+    "type": "both",
+    "pt": {
+      "name": "Ribossomo",
+      "function": "Ajuda a célula a produzir proteínas, que ela usa para crescer e funcionar.",
+      "hint": "Pense nele como uma pequena fábrica de proteínas."
+    },
+    "en": {
+      "name": "Ribosome",
+      "function": "Helps the cell make proteins that it uses to grow and function.",
+      "hint": "Think of it as a tiny protein factory."
+    },
+    "core": false
+  },
+  {
+    "id": "rough-er",
+    "type": "both",
+    "pt": {
+      "name": "Retículo endoplasmático rugoso",
+      "function": "Ajuda a produzir e transportar proteínas. Tem ribossomos presos à sua superfície.",
+      "hint": "Rugoso tem ribossomos."
+    },
+    "en": {
+      "name": "Rough endoplasmic reticulum",
+      "function": "Helps make and transport proteins. Ribosomes are attached to its surface.",
+      "hint": "Rough means it has ribosomes."
+    },
+    "core": false
+  },
+  {
+    "id": "smooth-er",
+    "type": "both",
+    "pt": {
+      "name": "Retículo endoplasmático liso",
+      "function": "Ajuda a produzir gorduras que formam partes da célula. Não tem ribossomos presos.",
+      "hint": "Liso não tem ribossomos."
+    },
+    "en": {
+      "name": "Smooth endoplasmic reticulum",
+      "function": "Helps make fats that form parts of the cell. It has no attached ribosomes.",
+      "hint": "Smooth means no attached ribosomes."
+    },
+    "core": false
+  },
+  {
+    "id": "golgi",
+    "type": "both",
+    "pt": {
+      "name": "Complexo de Golgi",
+      "function": "Modifica, organiza e envia algumas substâncias para outras partes da célula.",
+      "hint": "Pense nele como uma central de empacotamento e entrega."
+    },
+    "en": {
+      "name": "Golgi apparatus",
+      "function": "Modifies, sorts and sends some substances to other parts of the cell.",
+      "hint": "Think of it as a packaging and delivery center."
+    },
+    "core": false
+  },
+  {
+    "id": "lysosome",
+    "type": "animal",
+    "pt": {
+      "name": "Lisossomo",
+      "function": "Ajuda a digerir resíduos e partes velhas da célula. É comum em células animais.",
+      "hint": "Pense nele como uma equipe de limpeza e reciclagem."
+    },
+    "en": {
+      "name": "Lysosome",
+      "function": "Helps digest waste and old cell parts. It is common in animal cells.",
+      "hint": "Think of it as a cleanup and recycling crew."
+    },
+    "core": false
+  },
+  {
+    "id": "vacuole",
+    "type": "plant",
+    "pt": {
+      "name": "Vacúolo central",
+      "function": "Armazena água e outras substâncias. Nas células vegetais, ajuda a manter a célula firme.",
+      "hint": "Pense nele como um reservatório de água."
+    },
+    "en": {
+      "name": "Central vacuole",
+      "function": "Stores water and other substances. In plant cells, it helps keep the cell firm.",
+      "hint": "Think of it as a water tank."
+    },
+    "core": false
   }
 ];
 const TEXT = {
@@ -205,7 +217,7 @@ const TEXT = {
     "language": "Idioma",
     "eyebrow": "CELL LAB · ESTUDE E PRATIQUE",
     "heading": "Conheça a célula por dentro.",
-    "intro": "Aprenda a função, crie uma associação e teste sua memória.",
+    "intro": "Comece pelas cinco estruturas centrais das células. Depois, explore partes extras, veja suas funções e teste sua memória.",
     "study": "Cartões de estudo",
     "quiz": "Testar memória",
     "filter": "Estruturas de",
@@ -234,7 +246,7 @@ const TEXT = {
     "review": "Revisar erros",
     "perfect": "Você acertou todas! Volte mais tarde para treinar novamente.",
     "keep": "Revise as estruturas que você errou e tente outra vez.",
-    "scope": "Modelo de células eucarióticas típicas: nem toda célula possui todas estas estruturas. Cloroplastos ocorrem em células vegetais fotossintéticas; vacúolos líticos desempenham funções digestivas em plantas. As associações são recursos de memória, não definições completas.",
+    "scope": "Modelo simplificado: todas as células têm membrana, citoplasma e material genético, mas nem todas têm núcleo. A célula vegetal mostrada tem parede celular, cloroplastos e um grande vacúolo. Os desenhos não estão em escala. Algumas estruturas extras ampliam o estudo.",
     "saved": "Seu progresso de estudo fica salvo neste navegador.",
     "empty": "Nenhum erro para revisar.",
     "counter": "de"
@@ -245,7 +257,7 @@ const TEXT = {
     "language": "Language",
     "eyebrow": "CELL LAB · STUDY AND PRACTICE",
     "heading": "Get to know the cell.",
-    "intro": "Learn the function, make an association and test your memory.",
+    "intro": "Start with five key cell parts. Then explore extra structures, learn their functions and test your memory.",
     "study": "Study cards",
     "quiz": "Test your memory",
     "filter": "Structures in",
@@ -274,14 +286,14 @@ const TEXT = {
     "review": "Review mistakes",
     "perfect": "You got them all! Come back later to practice again.",
     "keep": "Review the structures you missed and try again.",
-    "scope": "Model of typical eukaryotic cells: not every cell contains all these structures. Chloroplasts occur in photosynthetic plant cells; lytic vacuoles perform digestive functions in plants. Memory cues are learning aids, not complete definitions.",
+    "scope": "Simplified model: all cells have a membrane, cytoplasm and genetic material, but not all cells have a nucleus. The plant cell shown has a cell wall, chloroplasts and a large vacuole. Diagrams are not to scale. Some extra structures are included for further study.",
     "saved": "Your study progress is saved in this browser.",
     "empty": "No mistakes to review.",
     "counter": "of"
   }
 };
-Object.assign(TEXT.pt,{explore:'Explore a célula',diagramHint:'Clique em uma parte ou em seu número para ver a função.',diagramNote:'Esquema simplificado, sem escala. Os números correspondem à lista de estruturas.',diagramAnimal:'Célula animal',diagramPlant:'Célula vegetal',diagramLabel:'Diagrama interativo. Use Tab e Enter para explorar as estruturas.',imageGame:'Jogo das imagens',imagePrompt:'Qual estrutura realiza esta função? Clique nela no diagrama.',imageWrong:'Essa não é a estrutura correta. A resposta foi marcada no diagrama.',imageCorrect:'Correto! Você identificou a estrutura.',imageNext:'Próxima função →',imageFinish:'Ver resultado →',imageGameLabel:'Jogo de identificação pelo diagrama da célula.'});
-Object.assign(TEXT.en,{explore:'Explore the cell',diagramHint:'Click a part or its number to see its function.',diagramNote:'Simplified diagram, not to scale. Numbers match the list of structures.',diagramAnimal:'Animal cell',diagramPlant:'Plant cell',diagramLabel:'Interactive diagram. Use Tab and Enter to explore the structures.',imageGame:'Cell image game',imagePrompt:'Which structure performs this function? Click it in the diagram.',imageWrong:'That is not the correct structure. The answer is highlighted in the diagram.',imageCorrect:'Correct! You identified the structure.',imageNext:'Next function →',imageFinish:'See results →',imageGameLabel:'Cell diagram identification game.'});
+Object.assign(TEXT.pt,{explore:'Explore a célula',diagramHint:'Clique em uma parte ou em seu número para ver a função.',diagramNote:'Esquema simplificado, sem escala. Os números correspondem à lista de estruturas.',diagramAnimal:'Célula animal',diagramPlant:'Célula vegetal',diagramLabel:'Diagrama interativo. Use Tab e Enter para explorar as estruturas.',coreLabel:'Essencial',extraLabel:'Extra',imageGame:'Jogo das imagens',imagePrompt:'Qual estrutura realiza esta função? Clique nela no diagrama.',imageWrong:'Essa não é a estrutura correta. A resposta foi marcada no diagrama.',imageCorrect:'Correto! Você identificou a estrutura.',imageNext:'Próxima função →',imageFinish:'Ver resultado →',imageGameLabel:'Jogo de identificação pelo diagrama da célula.'});
+Object.assign(TEXT.en,{explore:'Explore the cell',diagramHint:'Click a part or its number to see its function.',diagramNote:'Simplified diagram, not to scale. Numbers match the list of structures.',diagramAnimal:'Animal cell',diagramPlant:'Plant cell',diagramLabel:'Interactive diagram. Use Tab and Enter to explore the structures.',coreLabel:'Core',extraLabel:'Extra',imageGame:'Cell image game',imagePrompt:'Which structure performs this function? Click it in the diagram.',imageWrong:'That is not the correct structure. The answer is highlighted in the diagram.',imageCorrect:'Correct! You identified the structure.',imageNext:'Next function →',imageFinish:'See results →',imageGameLabel:'Cell diagram identification game.'});
 let diagramType='animal';
 let lang='en', known=new Set();
 try { if(localStorage.getItem('biomerge-language')==='pt')lang='pt'; const saved=JSON.parse(localStorage.getItem('biomerge-cell-known')||'[]'); if(Array.isArray(saved))known=new Set(saved.filter(id=>PARTS.some(part=>part.id===id))); } catch {}
@@ -364,7 +376,7 @@ function imageGameView(){
 function quizView(){if(finished)return `<span class="eyebrow">${tr('quiz')}</span><h2 class="card-name" tabindex="-1">${tr('result')}</h2><div class="result-number">${correctCount} / ${questions.length}</div><span>${tr('score')}</span><p>${tr(mistakes.length?'keep':'perfect')}</p><div class="actions"><button id="retry" class="primary">${tr('retry')}</button>${mistakes.length?`<button id="review">${tr('review')}</button>`:''}<button id="back-study">${tr('study')}</button></div>`;
 const q=questions[questionIndex],d=detail(q.part);return `<span class="counter">${questionIndex+1} ${tr('counter')} ${questions.length}</span><h2 tabindex="-1">${tr('question')}</h2><p class="function">${d.function}</p><div class="answers">${q.options.map(part=>`<button data-answer="${part.id}" ${chosen!==null?'disabled':''} class="${chosen!==null&&part.id===q.part.id?'correct':chosen===part.id?'wrong':''}">${detail(part).name}</button>`).join('')}</div><div class="feedback" role="status">${chosen===null?'':chosen===q.part.id?tr('correct'):tr('wrong')+' '+d.name}</div>${chosen!==null?`<div class="cue"><span class="label">${tr('hint')}</span><p>${d.hint}</p></div><div class="actions"><button id="advance" class="primary">${tr(questionIndex+1===questions.length?'finish':'nextQuestion')}</button></div>`:''}`;}
 function render(){document.documentElement.lang=lang==='pt'?'pt-BR':'en';document.title=tr('title');document.querySelectorAll('[data-text]').forEach(el=>el.textContent=tr(el.dataset.text));$('#language').value=lang;$('#language').setAttribute('aria-label',tr('language'));$('#activity').setAttribute('aria-label',tr(mode==='study'?'study':mode==='image'?'imageGameLabel':'quiz'));const eligible=pool(),count=eligible.filter(p=>known.has(p.id)).length;$('#progress-text').textContent=`${count} / ${eligible.length} ${tr('progress')}`;$('#progress').max=eligible.length;$('#progress').value=count;$('#progress').setAttribute('aria-label',tr('progress'));
-$('#parts').innerHTML=eligible.map((p,i)=>`<button data-card="${i}" ${mode==='study'&&cardIndex===i?'aria-current="true" class="selected"':''}><span>${PARTS.indexOf(p)+1}. ${detail(p).name}</span><span aria-label="${known.has(p.id)?tr('known'):tr('unmark')}">${known.has(p.id)?'✓':'·'}</span></button>`).join('');for(const m of ['study','quiz','image-game']){$('#'+m+'-mode').classList.toggle('selected',mode===m);$('#'+m+'-mode').setAttribute('aria-pressed',String(mode===m));}$('#activity').innerHTML=mode==='study'?cardView():mode==='image'?imageGameView():quizView();renderDiagram();}
+$('#parts').innerHTML=eligible.map((p,i)=>`<button data-card="${i}" ${mode==='study'&&cardIndex===i?'aria-current="true" class="selected"':''}><span>${PARTS.indexOf(p)+1}. ${detail(p).name}</span><span class="part-status">${p.core?tr('coreLabel'):tr('extraLabel')} ${known.has(p.id)?'✓':''}</span></button>`).join('');for(const m of ['study','quiz','image-game']){$('#'+m+'-mode').classList.toggle('selected',mode===m);$('#'+m+'-mode').setAttribute('aria-pressed',String(mode===m));}$('#activity').innerHTML=mode==='study'?cardView():mode==='image'?imageGameView():quizView();renderDiagram();}
 $('#diagram').addEventListener('click',e=>{
  const part=e.target.closest('[data-part]');
  if(part){selectPart(part.dataset.part);return;}
