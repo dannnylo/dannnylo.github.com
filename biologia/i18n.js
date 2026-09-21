@@ -1,0 +1,167 @@
+'use strict';
+const TRANSLATIONS = {
+  "pt": {
+    "brand": "LABORATÓRIO DE DESCOBERTAS",
+    "help": "Como jogar",
+    "eyebrow": " BIOLOGIA EM CADA COMBINAÇÃO",
+    "headline": "Pequenas peças.<br>Grandes <em>descobertas.</em>",
+    "intro": "Combine estruturas iguais e descubra os níveis<br class=\"desktop-break\"> de organização da vida. Tudo começa com um átomo.",
+    "score": "PONTOS",
+    "best": "RECORDE",
+    "restart": "<span aria-hidden=\"true\">↻</span> Novo jogo",
+    "sideways": "Combinar também pelas laterais",
+    "stack": "EMPILHE E COMBINE",
+    "next": "Próxima:",
+    "overTitle": "Uma descoberta de cada vez.",
+    "overText": "O laboratório ficou cheio!<br>Que tal uma nova experiência?",
+    "again": "Experimentar de novo ↗",
+    "controls": "<b>← →</b> posicionam · <b>↓ / Espaço</b> soltam · toque para soltar.",
+    "drop": "↓ Soltar",
+    "path": "SEU CAMINHO DE DESCOBERTAS",
+    "matter": "Da matéria à vida.",
+    "chapter": "Cada combinação abre um novo capítulo.",
+    "fact": "↗ VOCÊ SABIA?",
+    "step1": "Escolha onde cair",
+    "step1text": "Mova com ← → ou arraste o dedo.<br>A peça desce automaticamente.",
+    "step2": "Encontre os iguais",
+    "step2text": "Solte uma peça sobre outra igual<br>ou ao lado dela para combinar.",
+    "step3": "Continue descobrindo",
+    "step3text": "Faça combinações em cadeia.<br>Não deixe as pilhas chegarem ao topo.",
+    "footer": "<b>bio<span>merge</span></b> · Aprender também é brincar.",
+    "disclaimer": "Modelo didático: as fusões são simbólicas. Na natureza, estruturas biológicas se formam por processos complexos; nem toda molécula é um composto.",
+    "curiosity": "FEITO DE CURIOSIDADE ✳",
+    "welcome": "BEM-VINDO AO LABORATÓRIO",
+    "helpTitle": "Combine. Descubra. Repita.",
+    "help1": "As peças caem automaticamente. Use ← e → (ou A e D) para mover a peça, ↓ (ou S) e Espaço para soltar imediatamente até a última casa livre. No celular, toque em uma coluna ou arraste e solte. Você também pode usar os botões abaixo da área de jogo.",
+    "help2": "Ao pousar, peças iguais se combinam na vertical e, com “Combinar também pelas laterais” ativado, na horizontal. Peças na diagonal não se combinam. A gravidade preenche os espaços e pode gerar reações em cadeia! Você pode desativar as combinações laterais; a escolha vale a partir da próxima peça que pousar.",
+    "help3": "Veja a próxima peça antes de escolher sua posição. Você ganha pontos pelas combinações e alcança o objetivo ao descobrir um organismo. Organismos não se combinam. A partida termina quando todas as colunas ficam cheias. Abrir esta ajuda pausa a queda.",
+    "play": "Vamos descobrir ↗",
+    "game": "Jogo de combinar estruturas",
+    "movement": "Controles de movimento",
+    "left": "Mover para esquerda",
+    "right": "Mover para direita",
+    "dropLabel": "Soltar peça",
+    "close": "Fechar instruções",
+    "language": "Idioma",
+    "title": "BioMerge — Um pequeno começo. Uma grande evolução.",
+    "piece": "{name}, coluna {col}, linha {row}",
+    "falling": "{name} caindo na coluna {col}",
+    "board": "Área de queda com {cols} colunas e {rows} linhas, {cells} casas.",
+    "position": "{name} na coluna {col}. Use esquerda e direita para posicionar, espaço para soltar.",
+    "ended": "Partida encerrada.",
+    "discovered": "Descoberto",
+    "locked": "Ainda não descoberto",
+    "statusStart": "Posicione a peça sobre outra igual. Ela já está caindo!",
+    "statusEnd": "Fim da experiência! Você fez {points} pontos.",
+    "statusMerge": "{name} criado: +{points} pontos.",
+    "chain": "Reação em cadeia! ",
+    "statusContinue": "Continue empilhando e aproximando estruturas iguais.",
+    "statusWin": "Você descobriu um organismo! Continue jogando para somar pontos."
+  },
+  "en": {
+    "brand": "DISCOVERY LAB",
+    "help": "How to play",
+    "eyebrow": " BIOLOGY IN EVERY MATCH",
+    "headline": "Small pieces.<br>Big <em>discoveries.</em>",
+    "intro": "Merge matching structures and discover the levels<br class=\"desktop-break\"> of biological organization. It all starts with an atom.",
+    "score": "SCORE",
+    "best": "BEST",
+    "restart": "<span aria-hidden=\"true\">↻</span> New game",
+    "sideways": "Also merge side by side",
+    "stack": "STACK AND MERGE",
+    "next": "Next:",
+    "overTitle": "One discovery at a time.",
+    "overText": "The lab is full!<br>Ready for a new experiment?",
+    "again": "Try again ↗",
+    "controls": "<b>← →</b> move · <b>↓ / Space</b> drop · tap to drop.",
+    "drop": "↓ Drop",
+    "path": "YOUR DISCOVERY PATH",
+    "matter": "From matter to life.",
+    "chapter": "Every merge opens a new chapter.",
+    "fact": "↗ DID YOU KNOW?",
+    "step1": "Choose where to land",
+    "step1text": "Move with ← → or drag your finger.<br>The piece falls automatically.",
+    "step2": "Find a match",
+    "step2text": "Drop a piece on a matching one<br>or beside it to merge.",
+    "step3": "Keep discovering",
+    "step3text": "Create chain reactions.<br>Keep the stacks from reaching the top.",
+    "footer": "<b>bio<span>merge</span></b> · Learning through play.",
+    "disclaimer": "Educational model: merges are symbolic. In nature, biological structures form through complex processes; not every molecule is a compound.",
+    "curiosity": "MADE OF CURIOSITY ✳",
+    "welcome": "WELCOME TO THE LAB",
+    "helpTitle": "Merge. Discover. Repeat.",
+    "help1": "Pieces fall automatically. Use ← and → (or A and D) to move, and ↓ (or S) or Space to drop straight to the last free cell. On mobile, tap a column or drag and release. You can also use the buttons below the board.",
+    "help2": "When a piece lands, matching pieces merge vertically and, with “Also merge side by side” enabled, horizontally. Diagonal pieces do not merge. Gravity fills the gaps and can trigger chain reactions! You can disable sideways merges; the setting applies when the next piece lands.",
+    "help3": "Check the next piece before choosing a position. Earn points by merging and reach the goal by discovering an organism. Organisms do not merge. The game ends when all columns are full. Opening this help pauses falling pieces.",
+    "play": "Let’s discover ↗",
+    "game": "Biology merge game",
+    "movement": "Movement controls",
+    "left": "Move left",
+    "right": "Move right",
+    "dropLabel": "Drop piece",
+    "close": "Close instructions",
+    "language": "Language",
+    "title": "BioMerge — Small beginnings. Big discoveries.",
+    "piece": "{name}, column {col}, row {row}",
+    "falling": "{name} falling in column {col}",
+    "board": "Falling area with {cols} columns and {rows} rows, {cells} cells.",
+    "position": "{name} in column {col}. Use left and right to move, Space to drop.",
+    "ended": "Game over.",
+    "discovered": "Discovered",
+    "locked": "Not discovered yet",
+    "statusStart": "Position the piece above a matching one. It is already falling!",
+    "statusEnd": "Experiment complete! You scored {points} points.",
+    "statusMerge": "{name} created: +{points} points.",
+    "chain": "Chain reaction! ",
+    "statusContinue": "Keep stacking and bringing matching structures together.",
+    "statusWin": "You discovered an organism! Keep playing to earn more points."
+  }
+};
+const ENGLISH_STAGES = [
+  {
+    "name": "Atom",
+    "sub": "The beginning of everything",
+    "fact": "Atoms are units of matter. Carbon, hydrogen, oxygen and nitrogen are among the elements found in living organisms."
+  },
+  {
+    "name": "Molecule",
+    "sub": "Connected atoms",
+    "fact": "A molecule consists of bonded atoms. O₂ contains only one element; water, H₂O, is a compound made of two elements."
+  },
+  {
+    "name": "Compound",
+    "sub": "Macromolecules of life",
+    "fact": "Here, “compound” represents macromolecules such as proteins. Compounds are not a level above molecules: this step is a simplification for the game."
+  },
+  {
+    "name": "Organelle",
+    "sub": "Functions inside the cell",
+    "fact": "Organelles are specialized structures within cells. Mitochondria help produce ATP, which powers cellular processes."
+  },
+  {
+    "name": "Cell",
+    "sub": "The unit of life",
+    "fact": "The cell is the basic unit of living organisms. Some organisms have a single cell; others are made of many cells."
+  },
+  {
+    "name": "Tissue",
+    "sub": "Cells working together",
+    "fact": "Tissues are organized groups of cells and extracellular material. Muscle tissue, for example, specializes in contraction."
+  },
+  {
+    "name": "Organ",
+    "sub": "Tissues working together",
+    "fact": "Organs bring together different tissues to perform functions. The heart contains muscle and connective tissue, among other types."
+  },
+  {
+    "name": "Organism",
+    "sub": "A complete living being",
+    "fact": "In multicellular organisms, organs can form systems. This game summarizes some levels of organization, not stages of evolution."
+  }
+];
+let language = 'pt';
+try { if (localStorage.getItem('biomerge-language') === 'en') language = 'en'; } catch {}
+function t(key, params = {}) {
+ return TRANSLATIONS[language][key].replace(/\{(\w+)\}/g, (_, name) => params[name] ?? '');
+}
+function formatNumber(value) { return value.toLocaleString(language === 'en' ? 'en-US' : 'pt-BR'); }
