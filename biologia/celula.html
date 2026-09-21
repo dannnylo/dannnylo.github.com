@@ -12,7 +12,8 @@
 .diagram-panel h2{font-size:22px;margin:18px 0 6px}.diagram-instruction{font-size:14px;color:#647655;margin:0 0 10px}
 .cell-drawing{display:block;width:100%;height:auto;overflow:visible;margin:16px 0}
 .cell-part{cursor:pointer;outline:none}.cell-part .organ{transition:filter .15s}
-.cell-part:hover .organ,.cell-part:focus-visible .organ,.cell-part[aria-pressed="true"] .organ{filter:drop-shadow(0 0 5px #183d32);stroke:#193e33;stroke-width:4}
+.cell-part:hover .organ,.cell-part:focus-visible .organ,.cell-part[aria-pressed="true"] .organ{ filter:drop-shadow(0 0 5px #183d32);stroke:#193e33;stroke-width:4}
+.cell-part[data-answer-state="correct"] .organ{stroke:#347b38;stroke-width:5;filter:drop-shadow(0 0 8px #74b64c)}.cell-part[data-answer-state="wrong"] .organ{stroke:#bd4c3b;stroke-width:5;filter:drop-shadow(0 0 8px #d88366)}
 .cell-part:focus-visible .number,.cell-part[aria-pressed="true"] .number{fill:#193e33;stroke:#fff;stroke-width:2}
 .cell-part .number{fill:#fffef9;stroke:#63835c;stroke-width:1.5}.cell-part .number-text{fill:#193e33;font-size:14px;font-weight:750;pointer-events:none}
 .cell-part:focus-visible .number-text,.cell-part[aria-pressed="true"] .number-text{fill:white}
@@ -24,7 +25,7 @@
 </style></head>
 <body><header><a href="./" data-text="back">← Back to the game</a><label><span data-text="language">Language</span><select id="language" aria-label="Language"><option value="en">English</option><option value="pt">Português</option></select></label></header>
 <main><div class="eyebrow" data-text="eyebrow">CELL LAB · STUDY AND PRACTICE</div><h1 data-text="heading">Get to know the cell.</h1><p class="intro" data-text="intro">Learn the function, make an association and test your memory.</p>
-<div class="toolbar"><div class="modes"><button id="study-mode" data-text="study" aria-pressed="true">Study cards</button><button id="quiz-mode" data-text="quiz" aria-pressed="false">Test your memory</button></div><label><span data-text="filter">Structures in</span><select id="filter"><option value="all" data-text="all">All</option><option value="animal" data-text="animal">Animal cell</option><option value="plant" data-text="plant">Plant cell</option></select></label></div>
+<div class="toolbar"><div class="modes"><button id="study-mode" data-text="study" aria-pressed="true">Study cards</button><button id="quiz-mode" data-text="quiz" aria-pressed="false">Test your memory</button><button id="image-game-mode" data-text="imageGame" aria-pressed="false">Image game</button></div><label><span data-text="filter">Structures in</span><select id="filter"><option value="all" data-text="all">All</option><option value="animal" data-text="animal">Animal cell</option><option value="plant" data-text="plant">Plant cell</option></select></label></div>
 <div class="layout"><aside class="sidebar"><h2 data-text="parts">PARTS OF THE CELL</h2><p class="progress" id="progress-text"></p><progress id="progress" max="12" value="0" aria-label="Memorized"></progress><nav id="parts"></nav><p class="saved" data-text="saved">Your study progress is saved in this browser.</p></aside><section class="diagram-panel" id="diagram"></section><section class="activity" id="activity" aria-label="Study activity"></section></div><p class="note" data-text="scope"></p></main>
 <script>
 const PARTS = [
@@ -279,8 +280,8 @@ const TEXT = {
     "counter": "of"
   }
 };
-Object.assign(TEXT.pt,{explore:'Explore a célula',diagramHint:'Clique em uma parte ou em seu número para ver a função.',diagramNote:'Esquema simplificado, sem escala. Os números correspondem à lista de estruturas.',diagramAnimal:'Célula animal',diagramPlant:'Célula vegetal',diagramLabel:'Diagrama interativo. Use Tab e Enter para explorar as estruturas.'});
-Object.assign(TEXT.en,{explore:'Explore the cell',diagramHint:'Click a part or its number to see its function.',diagramNote:'Simplified diagram, not to scale. Numbers match the list of structures.',diagramAnimal:'Animal cell',diagramPlant:'Plant cell',diagramLabel:'Interactive diagram. Use Tab and Enter to explore the structures.'});
+Object.assign(TEXT.pt,{explore:'Explore a célula',diagramHint:'Clique em uma parte ou em seu número para ver a função.',diagramNote:'Esquema simplificado, sem escala. Os números correspondem à lista de estruturas.',diagramAnimal:'Célula animal',diagramPlant:'Célula vegetal',diagramLabel:'Diagrama interativo. Use Tab e Enter para explorar as estruturas.',imageGame:'Jogo das imagens',imagePrompt:'Qual estrutura realiza esta função? Clique nela no diagrama.',imageWrong:'Essa não é a estrutura correta. A resposta foi marcada no diagrama.',imageCorrect:'Correto! Você identificou a estrutura.',imageNext:'Próxima função →',imageFinish:'Ver resultado →',imageGameLabel:'Jogo de identificação pelo diagrama da célula.'});
+Object.assign(TEXT.en,{explore:'Explore the cell',diagramHint:'Click a part or its number to see its function.',diagramNote:'Simplified diagram, not to scale. Numbers match the list of structures.',diagramAnimal:'Animal cell',diagramPlant:'Plant cell',diagramLabel:'Interactive diagram. Use Tab and Enter to explore the structures.',imageGame:'Cell image game',imagePrompt:'Which structure performs this function? Click it in the diagram.',imageWrong:'That is not the correct structure. The answer is highlighted in the diagram.',imageCorrect:'Correct! You identified the structure.',imageNext:'Next function →',imageFinish:'See results →',imageGameLabel:'Cell diagram identification game.'});
 let diagramType='animal';
 let lang='en', known=new Set();
 try { if(localStorage.getItem('biomerge-language')==='pt')lang='pt'; const saved=JSON.parse(localStorage.getItem('biomerge-cell-known')||'[]'); if(Array.isArray(saved))known=new Set(saved.filter(id=>PARTS.some(part=>part.id===id))); } catch {}
@@ -288,6 +289,7 @@ let mode='study', filter='all', cardIndex=0, revealed=false, questions=[], quest
 const $=selector=>document.querySelector(selector), tr=key=>TEXT[lang][key], detail=part=>part[lang];
 function pool(){return PARTS.filter(part=>filter==='all'||part.type==='both'||part.type===filter);}
 function selectPart(id){
+ if(mode==='image'){chooseImagePart(id);return;}
  const index=pool().findIndex(part=>part.id===id);
  if(index<0)return;
  cardIndex=index;mode='study';revealed=true;
@@ -297,7 +299,9 @@ function selectPart(id){
 }
 function diagramPart(id,shape,x,y){
  const part=PARTS.find(p=>p.id===id),number=PARTS.indexOf(part)+1;
- return `<g class="cell-part" role="button" tabindex="0" data-part="${id}" aria-label="${number}. ${detail(part).name}" aria-controls="activity" aria-pressed="${pool()[cardIndex].id===id}"><title>${detail(part).name}</title>${shape}<circle class="number" cx="${x}" cy="${y}" r="13"/><text class="number-text" x="${x}" y="${y+5}" text-anchor="middle">${number}</text></g>`;
+ const selected=mode==='image'?chosen===id:mode==='study'&&pool()[cardIndex]?.id===id;
+ const result=mode==='image'&&chosen!==null?(questions[questionIndex].part.id===id?'correct':chosen===id?'wrong':''):'';
+ return `<g class="cell-part" role="button" tabindex="0" data-part="${id}" aria-label="${number}. ${detail(part).name}" aria-controls="activity" aria-pressed="${selected}" ${result?`data-answer-state="${result}"`:''}><title>${detail(part).name}</title>${shape}<circle class="number" cx="${x}" cy="${y}" r="13"/><text class="number-text" x="${x}" y="${y+5}" text-anchor="middle">${number}</text></g>`;
 }
 function cellDiagram(type){
  const plant=type==='plant';
@@ -322,33 +326,54 @@ function cellDiagram(type){
  return `<svg class="cell-drawing" viewBox="0 0 640 460" role="group" aria-label="${tr('diagramLabel')}">${parts}</svg>`;
 }
 function renderDiagram(){
- $('#diagram').hidden=mode!=='study';
+ $('#diagram').hidden=mode!=='study'&&mode!=='image';
  $('.layout').classList.toggle('quiz-layout',mode==='quiz');
- if(mode!=='study')return;
+ if(mode!=='study'&&mode!=='image')return;
  const type=filter==='all'?diagramType:filter;
- $('#diagram').innerHTML=`${filter==='all'?`<div class="diagram-tabs"><button data-diagram="animal" aria-pressed="${type==='animal'}" class="${type==='animal'?'selected':''}">${tr('animal')}</button><button data-diagram="plant" aria-pressed="${type==='plant'}" class="${type==='plant'?'selected':''}">${tr('plant')}</button></div>`:''}<h2>${tr(type==='plant'?'diagramPlant':'diagramAnimal')}</h2><p class="diagram-instruction">${tr('diagramHint')}</p>${cellDiagram(type)}<p class="diagram-note">${tr('diagramNote')}</p>`;
+ $('#diagram').innerHTML=`${filter==='all'?`<div class="diagram-tabs"><button data-diagram="animal" aria-pressed="${type==='animal'}" class="${type==='animal'?'selected':''}">${tr('animal')}</button><button data-diagram="plant" aria-pressed="${type==='plant'}" class="${type==='plant'?'selected':''}">${tr('plant')}</button></div>`:''}<h2>${tr(type==='plant'?'diagramPlant':'diagramAnimal')}</h2><p class="diagram-instruction">${tr(mode==='image'?'imagePrompt':'diagramHint')}</p>${cellDiagram(type)}<p class="diagram-note">${tr('diagramNote')}</p>`;
 }
 function shuffled(items){const result=[...items];for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}return result;}
 function startQuiz(ids){const eligible=pool();questions=shuffled(ids?eligible.filter(p=>ids.includes(p.id)):eligible).map(part=>({part,options:shuffled([part,...shuffled(eligible.filter(p=>p.id!==part.id)).slice(0,3)])}));if(!questions.length)return;mode='quiz';questionIndex=0;chosen=null;correctCount=0;mistakes=[];finished=false;render();}
 function choose(id){if(mode!=='quiz'||finished||chosen!==null)return;const question=questions[questionIndex];if(!question.options.some(part=>part.id===id))return;chosen=id;if(id===question.part.id)correctCount++;else mistakes.push(question.part.id);render();$('#advance').focus();}
+function startImageGame(){
+ const type=filter==='all'?diagramType:filter;
+ const eligible=PARTS.filter(part=>part.type==='both'||part.type===type);
+ questions=shuffled(eligible).map(part=>({part}));
+ mode='image';questionIndex=0;chosen=null;correctCount=0;mistakes=[];finished=false;
+ render();
+}
+function startImageReview(){const ids=[...new Set(mistakes)];if(!ids.length)return;const type=filter==='all'?diagramType:filter;questions=shuffled(PARTS.filter(part=>ids.includes(part.id)&&(part.type==='both'||part.type===type))).map(part=>({part}));mode='image';questionIndex=0;chosen=null;correctCount=0;mistakes=[];finished=false;render();}
+function chooseImagePart(id){
+ if(mode!=='image'||finished||chosen!==null)return;
+ const part=PARTS.find(item=>item.id===id);
+ if(!part||!questions[questionIndex].part)return;
+ chosen=id;
+ if(id===questions[questionIndex].part.id)correctCount++;else mistakes.push(questions[questionIndex].part.id);
+ render();$('#image-advance').focus();
+}
 function advance(){if(chosen===null)return;if(questionIndex+1===questions.length)finished=true;else{questionIndex++;chosen=null;}render();$('#activity h2').focus();}
 function setLanguage(value){lang=value==='pt'?'pt':'en';try{localStorage.setItem('biomerge-language',lang);}catch{}render();}
 function mark(){const id=pool()[cardIndex].id;if(known.has(id))known.delete(id);else known.add(id);try{localStorage.setItem('biomerge-cell-known',JSON.stringify([...known]));}catch{}render();($('#mark')||$('#reveal')).focus();}
 function moveCard(step){cardIndex=(cardIndex+step+pool().length)%pool().length;if(pool()[cardIndex].type!=='both')diagramType=pool()[cardIndex].type;revealed=false;render();$('#activity h2').focus();}
 function cardView(){const part=pool()[cardIndex],d=detail(part);return `<span class="counter">${cardIndex+1} ${tr('counter')} ${pool().length}</span><div class="structure-icon" aria-hidden="true">✳</div><h2 class="card-name" tabindex="-1">${d.name}</h2>${revealed?`<span class="label">${tr('function')}</span><p class="function">${d.function}</p><div class="cue"><span class="label">${tr('hint')}</span><p>${d.hint}</p></div>`:`<p class="muted">${tr('think')}</p>`}<div class="actions"><button class="primary" id="reveal" aria-expanded="${revealed}">${tr(revealed?'hide':'reveal')}</button>${revealed||known.has(part.id)?`<button id="mark" aria-pressed="${known.has(part.id)}">${tr(known.has(part.id)?'unmark':'known')}</button>`:''}</div><div class="navigation"><button id="previous">${tr('previous')}</button><button id="next">${tr('next')}</button></div>`;}
+function imageGameView(){
+ if(finished)return `<span class="eyebrow">${tr('imageGame')}</span><h2 class="card-name" tabindex="-1">${tr('result')}</h2><div class="result-number">${correctCount} / ${questions.length}</div><span>${tr('score')}</span><p>${tr(mistakes.length?'keep':'perfect')}</p><div class="actions"><button id="image-retry" class="primary">${tr('retry')}</button>${mistakes.length?`<button id="image-review">${tr('review')}</button>`:''}<button id="back-study">${tr('study')}</button></div>`;
+ const q=questions[questionIndex],d=detail(q.part);
+ return `<span class="counter">${questionIndex+1} ${tr('counter')} ${questions.length}</span><h2 class="card-name" tabindex="-1">${tr('imageGame')}</h2><span class="label">${tr('function')}</span><p class="function">${d.function}</p><p class="diagram-instruction">${tr('imagePrompt')}</p><div class="feedback" role="status">${chosen===null?'':chosen===q.part.id?tr('imageCorrect'):tr('imageWrong')}</div>${chosen!==null?`<div class="cue"><span class="label">${tr('hint')}</span><p>${d.hint}</p></div><div class="actions"><button id="image-advance" class="primary">${tr(questionIndex+1===questions.length?'imageFinish':'imageNext')}</button></div>`:''}`;
+}
 function quizView(){if(finished)return `<span class="eyebrow">${tr('quiz')}</span><h2 class="card-name" tabindex="-1">${tr('result')}</h2><div class="result-number">${correctCount} / ${questions.length}</div><span>${tr('score')}</span><p>${tr(mistakes.length?'keep':'perfect')}</p><div class="actions"><button id="retry" class="primary">${tr('retry')}</button>${mistakes.length?`<button id="review">${tr('review')}</button>`:''}<button id="back-study">${tr('study')}</button></div>`;
 const q=questions[questionIndex],d=detail(q.part);return `<span class="counter">${questionIndex+1} ${tr('counter')} ${questions.length}</span><h2 tabindex="-1">${tr('question')}</h2><p class="function">${d.function}</p><div class="answers">${q.options.map(part=>`<button data-answer="${part.id}" ${chosen!==null?'disabled':''} class="${chosen!==null&&part.id===q.part.id?'correct':chosen===part.id?'wrong':''}">${detail(part).name}</button>`).join('')}</div><div class="feedback" role="status">${chosen===null?'':chosen===q.part.id?tr('correct'):tr('wrong')+' '+d.name}</div>${chosen!==null?`<div class="cue"><span class="label">${tr('hint')}</span><p>${d.hint}</p></div><div class="actions"><button id="advance" class="primary">${tr(questionIndex+1===questions.length?'finish':'nextQuestion')}</button></div>`:''}`;}
-function render(){document.documentElement.lang=lang==='pt'?'pt-BR':'en';document.title=tr('title');document.querySelectorAll('[data-text]').forEach(el=>el.textContent=tr(el.dataset.text));$('#language').value=lang;$('#language').setAttribute('aria-label',tr('language'));$('#activity').setAttribute('aria-label',tr(mode==='study'?'study':'quiz'));const eligible=pool(),count=eligible.filter(p=>known.has(p.id)).length;$('#progress-text').textContent=`${count} / ${eligible.length} ${tr('progress')}`;$('#progress').max=eligible.length;$('#progress').value=count;$('#progress').setAttribute('aria-label',tr('progress'));
-$('#parts').innerHTML=eligible.map((p,i)=>`<button data-card="${i}" ${mode==='study'&&cardIndex===i?'aria-current="true" class="selected"':''}><span>${PARTS.indexOf(p)+1}. ${detail(p).name}</span><span aria-label="${known.has(p.id)?tr('known'):tr('unmark')}">${known.has(p.id)?'✓':'·'}</span></button>`).join('');for(const m of ['study','quiz']){$('#'+m+'-mode').classList.toggle('selected',mode===m);$('#'+m+'-mode').setAttribute('aria-pressed',String(mode===m));}$('#activity').innerHTML=mode==='study'?cardView():quizView();renderDiagram();}
+function render(){document.documentElement.lang=lang==='pt'?'pt-BR':'en';document.title=tr('title');document.querySelectorAll('[data-text]').forEach(el=>el.textContent=tr(el.dataset.text));$('#language').value=lang;$('#language').setAttribute('aria-label',tr('language'));$('#activity').setAttribute('aria-label',tr(mode==='study'?'study':mode==='image'?'imageGameLabel':'quiz'));const eligible=pool(),count=eligible.filter(p=>known.has(p.id)).length;$('#progress-text').textContent=`${count} / ${eligible.length} ${tr('progress')}`;$('#progress').max=eligible.length;$('#progress').value=count;$('#progress').setAttribute('aria-label',tr('progress'));
+$('#parts').innerHTML=eligible.map((p,i)=>`<button data-card="${i}" ${mode==='study'&&cardIndex===i?'aria-current="true" class="selected"':''}><span>${PARTS.indexOf(p)+1}. ${detail(p).name}</span><span aria-label="${known.has(p.id)?tr('known'):tr('unmark')}">${known.has(p.id)?'✓':'·'}</span></button>`).join('');for(const m of ['study','quiz','image-game']){$('#'+m+'-mode').classList.toggle('selected',mode===m);$('#'+m+'-mode').setAttribute('aria-pressed',String(mode===m));}$('#activity').innerHTML=mode==='study'?cardView():mode==='image'?imageGameView():quizView();renderDiagram();}
 $('#diagram').addEventListener('click',e=>{
  const part=e.target.closest('[data-part]');
  if(part){selectPart(part.dataset.part);return;}
  const tab=e.target.closest('[data-diagram]');
- if(tab){diagramType=tab.dataset.diagram;const selected=pool()[cardIndex];if(selected.type!=='both'&&selected.type!==diagramType){cardIndex=pool().findIndex(p=>p.id==='nucleus');revealed=true;}render();}
+ if(tab){diagramType=tab.dataset.diagram;if(mode==='image'){startImageGame();return;}const selected=pool()[cardIndex];if(selected.type!=='both'&&selected.type!==diagramType){cardIndex=pool().findIndex(p=>p.id==='nucleus');revealed=true;}render();}
 });
 $('#diagram').addEventListener('keydown',e=>{const part=e.target.closest('[data-part]');if(part&&(e.key==='Enter'||e.key===' ')){e.preventDefault();selectPart(part.dataset.part);}});
-$('#language').addEventListener('change' ,e=>setLanguage(e.target.value));$('#filter').addEventListener('change',e=>{filter=e.target.value;cardIndex=0;revealed=false;if(mode==='quiz')startQuiz();else render();});$('#study-mode').addEventListener('click',()=>{mode='study';render();});$('#quiz-mode').addEventListener('click',()=>{if(mode!=='quiz')startQuiz();});
+$('#language').addEventListener('change' ,e=>setLanguage(e.target.value));$('#filter').addEventListener('change',e=>{filter=e.target.value;cardIndex=0;revealed=false;if(mode==='quiz')startQuiz();else if(mode==='image')startImageGame();else render();});$('#study-mode').addEventListener('click',()=>{mode='study';render();});$('#quiz-mode').addEventListener('click',()=>{if(mode!=='quiz')startQuiz();});$('#image-game-mode').addEventListener('click',()=>{if(mode!=='image')startImageGame();});
 $('#parts').addEventListener('click',e=>{const button=e.target.closest('[data-card]');if(!button)return;selectPart(pool()[Number(button.dataset.card)].id);});
-$('#activity').addEventListener('click',e=>{const button=e.target.closest('button');if(!button)return;if(button.dataset.answer){choose(button.dataset.answer);return;}switch(button.id){case'reveal':revealed=!revealed;render();$('#reveal').focus();break;case'mark':mark();break;case'previous':moveCard(-1);break;case'next':moveCard(1);break;case'advance':advance();break;case'retry':startQuiz();break;case'review':startQuiz([...mistakes]);break;case'back-study':mode='study';render();break;}});
+$('#activity').addEventListener('click',e=>{const button=e.target.closest('button');if(!button)return;if(button.dataset.answer){choose(button.dataset.answer);return;}switch(button.id){case'reveal':revealed=!revealed;render();$('#reveal').focus();break;case'mark':mark();break;case'previous':moveCard(-1);break;case'next':moveCard(1);break;case'advance':advance();break;case'image-advance':if(chosen!==null){if(questionIndex+1===questions.length)finished=true;else{questionIndex++;chosen=null;}render();$('#activity h2').focus();}break;case'image-retry':startImageGame();break;case'image-review':startImageReview();break;case'retry':startQuiz();break;case'review':startQuiz([...mistakes]);break;case'back-study':mode='study';render();break;}});
 render();
 </script></body></html>
