@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cloud Script – Largura Fixa + Palavra em Parábola Curva</title>
+  <style>
+    :root{--ink:#e6f0ff;--line:#9ec5ff;--bg:#0b1324;--panel:#0e1630;}
+    *{box-sizing:border-box}
+    body{background:var(--bg);color:var(--ink);font-family:system-ui, -apple-system, Segoe UI, Roboto, sans-serif;margin:0;display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1rem}
+    h1{margin:.2rem 0 .6rem 0;font-size:clamp(18px,2.6vw,26px)}
+    canvas{background:var(--panel);border:1px solid #1c2853;border-radius:12px;width:min(1100px,92vw);height:72vh}
+    .hint{color:#9fb6ff;font-size:12px}
+  </style>
+</head>
+<body>
+  <h1>Cloud Script – A–Z (em cima) • "DEBORA" em nuvem curva (embaixo)</h1>
+  <div class="hint">As letras agora seguem a <strong>curvatura da parábola</strong>, rotacionando suavemente para acompanhar a inclinação.</div>
+  <canvas id="c" width="1400" height="820" aria-label="Cloud Script"></canvas>
+
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+
+    function setStyle(){
+      ctx.strokeStyle = '#9ec5ff';
+      ctx.fillStyle   = '#9ec5ff';
+      ctx.lineWidth   = 2;
+      ctx.lineJoin = 'round';
+      ctx.lineCap  = 'round';
+      ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+    }
+
+    function bump(x, y, r){ ctx.beginPath(); ctx.arc(x + r, y, r, Math.PI, 0, false); ctx.stroke(); }
+    function flat(x, y, w){ ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+w,y); ctx.stroke(); }
+    function peak(x, y, r){ bump(x, y, r*0.65); bump(x+r*0.3, y-r*0.45, r*1.05); }
+    function swirl(x, y, r){ const steps=34,a0=Math.PI,a1=a0+Math.PI*1.4;ctx.beginPath();for(let i=0;i<=steps;i++){const t=i/steps,a=a0+(a1-a0)*t,rr=r*(1-0.6*t);const px=x+r+Math.cos(a)*rr,py=y+Math.sin(a)*rr*0.9;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.stroke();}
+
+    function drawGlyph(tokens, x, y, scale){
+      const rS=0.55*scale, rM=0.85*scale, rL=1.15*scale;
+      const seg={ s:(cx)=>bump(cx,y,rS), m:(cx)=>bump(cx,y,rM), l:(cx)=>bump(cx,y,rL), p:(cx)=>peak(cx,y,rM), sw:(cx)=>swirl(cx,y,rM), _:(cx)=>flat(cx,y,rS*1.2) };
+      let cursor=x; for(const t of tokens){ const f=seg[t]; if(!f) continue; f(cursor); cursor+=scale*0.9; } return cursor-x; }
+
+    const glyphMap={
+      A:'m s', B:'s m', C:'s s', D:'m l', E:'s s s', F:'s m s', G:'s s l', H:'m s s', I:'s sw', J:'l _',
+      K:'s s sw', L:'p _', M:'s m s', N:'m p', O:'s s s sw', P:'s s', Q:'s m', R:'m m', S:'s s s', T:'m p',
+      U:'m m _', V:'m _', W:'m m', X:'s sw', Y:'s s _', Z:'s m _'
+    };
+
+    function drawAlphabetTop(){
+      const fixedWidth=52, scale=10; let x=40, y=110; const letters=Object.keys(glyphMap);
+      ctx.fillStyle = '#7fb0ff'; ctx.fillText('A–Z (largura fixa)', 40, 40);
+      letters.forEach((ch, i)=>{
+        ctx.strokeStyle = '#9ec5ff';
+        drawGlyph(glyphMap[ch].split(/\s+/), x+(fixedWidth*0.18), y, scale);
+        ctx.fillStyle = '#7fb0ff'; ctx.fillText(ch, x+fixedWidth*0.4, y+18);
+        x += fixedWidth; if((i+1)%13===0){ y+=90; x=40; }
+      });
+    }
+
+    function drawWordCloud(word){
+      word = word.toUpperCase();
+      const scale=14, letterW=58, gap=0;
+      const total = word.length*letterW + (word.length-1)*gap;
+      const startX = (canvas.width-total)/2;
+      const baseY = 590;
+      const a = 0.0008;
+      const center = startX + total/2;
+
+      // base da parábola
+      ctx.strokeStyle = '#9ec5ff';
+      ctx.beginPath();
+      const left=startX-35, right=startX+total+35;
+      ctx.moveTo(left, baseY + a*(left-center)*(left-center));
+      for(let x=left; x<=right; x+=8){ const py = baseY + a*(x-center)*(x-center); ctx.lineTo(x, py); }
+      ctx.stroke();
+
+      // desenha cada letra seguindo a inclinação da parábola
+      for(let i=0;i<word.length;i++){
+        const ch = word[i];
+        const mid = startX + i*(letterW+gap) + letterW/2;
+        const y = baseY - 20 + a*(mid-center)*(mid-center);
+        const slope = 2*a*(mid-center);
+        const angle = Math.atan(slope);
+
+        ctx.save();
+        ctx.translate(mid, y);
+        ctx.rotate(angle);
+        drawGlyph((glyphMap[ch]||'m').split(/\s+/), -letterW/2.5, 0, scale);
+        ctx.restore();
+      }
+    }
+
+    function render(){
+      ctx.clearRect(0,0,canvas.width,canvas.height); setStyle();
+      drawAlphabetTop();
+      drawWordCloud('DEBORA');
+    }
+
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Mensagem aneis</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            background: #f0f0f0;
+            margin: 20px;
+        }
+        canvas {
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 0 10px #0002;
+        }
+        textarea {
+            width: 80%;
+            max-width: 600px;
+            height: 100px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn btn-primary">Voltar</a>
+
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="canvas" width="850" height="2000"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h1>Mensagem aneis</h1>
+            <textarea id="mensagem" placeholder="Digite sua mensagem aqui..." oninput="gerarImagem(true)"></textarea><br>
+            <button onclick="salvarImagem()">Salvar Imagem</button><br>
+        </div>
+    </div>
+
+    <script>
+        fetch("https://api.qrcode-monkey.com//qr/custom", {
+        "headers": {
+            "accept": "*/*",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7,es;q=0.6",
+            "cache-control": "no-cache",
+            "content-type": "text/plain;charset=UTF-8",
+            "pragma": "no-cache",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not(A:Brand\";v=\"99\", \"Google Chrome\";v=\"133\", \"Chromium\";v=\"133\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Linux\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "Referer": "https://www.qrcode-monkey.com/",
+            "Referrer-Policy": "strict-origin-when-cross-origin"
+        },
+        "body": "{\"data\":\"https://www.qrcode-monkey.com\",\"config\":{\"body\":\"pointed-smooth\",\"eye\":\"frame2\",\"eyeBall\":\"ball0\",\"erf1\":[\"fv\"],\"erf2\":[],\"erf3\":[],\"brf1\":[],\"brf2\":[],\"brf3\":[],\"bodyColor\":\"#AA2626\",\"bgColor\":\"#FFFFFF\",\"eye1Color\":\"#AA2626\",\"eye2Color\":\"#AA2626\",\"eye3Color\":\"#AA2626\",\"eyeBall1Color\":\"#AA2626\",\"eyeBall2Color\":\"#AA2626\",\"eyeBall3Color\":\"#AA2626\",\"gradientColor1\":null,\"gradientColor2\":null,\"gradientType\":\"linear\",\"gradientOnEyes\":\"true\",\"logo\":\"#bitcoin\",\"logoMode\":\"default\"},\"size\":1000,\"download\":\"imageUrl\",\"file\":\"svg\"}",
+        "method": "POST"
+        });
+    </script>
+</body>
+</html>

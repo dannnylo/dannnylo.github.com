@@ -45,39 +45,40 @@
 </head>
 <body>
     <a href="../index.html" class="btn btn-primary">Voltar</a>
-    <h1>Quebra cabeça</h1>
+    <h1>Mensagem estreita</h1>
     <textarea id="mensagem" placeholder="Digite sua mensagem secreta aqui..." oninput="gerarImagem()"></textarea><br>
 
 
     <button onclick="salvarImagem()">Salvar Imagem</button><br>
-    <canvas id="canvas" width="800" height="400"></canvas>
+    <canvas id="canvas" width="800" height="1000"></canvas>
     <script>
         function gerarImagem() {
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
-            const mensagem = document.getElementById('mensagem').value;
+            let mensagem = document.getElementById('mensagem').value;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#fff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            const fontSize = 30;
+            const fontSize = 200; // Very tall font size
             ctx.font = `${fontSize}px Arial`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            const x = canvas.width / 2;
-            const y = canvas.height / 2;
+            const xStart = canvas.width / 2 - (mensagem.length * fontSize * 0.1); // Adjust starting position
+            const y = canvas.height / 2 + 80;
 
+            ctx.fillStyle = '#000';
+            let x = xStart;
             for (let i = 0; i < mensagem.length; i++) {
                 const char = mensagem[i];
-                const angle = (Math.PI * 2 / mensagem.length) * i;
-                const radius = Math.min(canvas.width, canvas.height) / 3;
-                const xPos = x + Math.cos(angle) * radius;
-                const yPos = y + Math.sin(angle) * radius;
-
-                ctx.fillStyle = `hsl(${(i / mensagem.length) * 360}, 100%, 50%)`;
-                ctx.fillText(char, xPos, yPos);
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.scale(0.2, 5); // Narrow the text horizontally and increase height
+                ctx.fillText(char, 0, 0);
+                ctx.restore();
+                x += fontSize * 0.2; // Adjust spacing for narrow letters
             }
         }
 

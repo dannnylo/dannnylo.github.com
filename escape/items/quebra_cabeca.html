@@ -46,9 +46,14 @@
 <body>
     <a href="../index.html" class="btn btn-primary">Voltar</a>
     <h1>Quebra cabeça</h1>
-
+    <label for="tipo" class="mr-2">Figura:</label>
+    <select id="tipo" class="form-control d-inline-block w-auto" onchange="gerarImagem()">
+        <option value="star">Estrela</option>
+        <option value="heart">Coração</option>
+    </select>
 
     <button onclick="salvarImagem()">Salvar Imagem</button><br>
+
     <canvas id="canvas" width="800" height="800"></canvas>
     <script>
         function gerarImagem() {
@@ -85,8 +90,11 @@
                     ctx.stroke();
                 }
 
-                // heart(ctx);
-                star(ctx)
+                if (document.getElementById('tipo').value === 'heart') {
+                    heart(ctx);
+                } else if (document.getElementById('tipo').value === 'star') {
+                    star(ctx);
+                }
 
             };
         }
