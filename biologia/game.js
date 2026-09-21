@@ -21,7 +21,7 @@ function renderStatus() {
 }
 function setStatus(key, params = {}) { statusMessage = {key, params}; renderStatus(); }
 function setLanguage(value) {
- language = value === 'en' ? 'en' : 'pt';
+ language = value === 'pt' ? 'pt' : 'en';
  try { localStorage.setItem('biomerge-language', language); } catch {}
  document.documentElement.lang = language === 'pt' ? 'pt-BR' : 'en';
  document.title = t('title');

@@ -132,7 +132,7 @@ test('translations have matching keys and interpolate localized values', () => {
  assert.equal(run('formatNumber(1234)'), '1,234');
  assert.equal(run('t("piece", {name:"Atom", col:2, row:3})'), 'Atom, column 2, row 3');
  run('setLanguage("invalid")');
- assert.equal(run('language'), 'pt');
+ assert.equal(run('language'), 'en');
 });
 
 test('language preference survives reloads', () => {
@@ -142,4 +142,15 @@ test('language preference survives reloads', () => {
  assert.equal(reloaded('language'), 'en');
  assert.equal(reloaded('STAGES[7].name'), 'Organism');
  assert.match(reloaded('document.querySelector("#status").textContent'), /already falling/);
+});
+
+test('English is the default but a saved Portuguese preference is respected', () => {
+ const fresh = setup();
+ assert.equal(fresh('language'), 'en');
+ assert.equal(fresh('document.documentElement.lang'), 'en');
+ const portuguese = setup(new Map([['biomerge-language', 'pt']]));
+ assert.equal(portuguese('language'), 'pt');
+ assert.equal(portuguese('STAGES[0].name'), 'Átomo');
+ const invalid = setup(new Map([['biomerge-language', 'unknown']]));
+ assert.equal(invalid('language'), 'en');
 });

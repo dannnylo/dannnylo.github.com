@@ -159,8 +159,11 @@ const ENGLISH_STAGES = [
     "fact": "In multicellular organisms, organs can form systems. This game summarizes some levels of organization, not stages of evolution."
   }
 ];
-let language = 'pt';
-try { if (localStorage.getItem('biomerge-language') === 'en') language = 'en'; } catch {}
+let language = 'en';
+try {
+ const savedLanguage = localStorage.getItem('biomerge-language');
+ if (savedLanguage === 'pt' || savedLanguage === 'en') language = savedLanguage;
+} catch {}
 function t(key, params = {}) {
  return TRANSLATIONS[language][key].replace(/\{(\w+)\}/g, (_, name) => params[name] ?? '');
 }
