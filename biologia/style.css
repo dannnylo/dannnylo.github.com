@@ -74,3 +74,5 @@
 .discovery-panel .stage-details{min-width:0}
 .discovery-panel .stage-details small{display:block}
 .discovery-panel .stages li{gap:10px}
+
+.study-link{color:#335b43;font-size:12px;font-weight:650;text-decoration:none;padding:8px;border:1px solid #d8dfd4;border-radius:7px}.study-link:hover{background:#e5ebdc}@media(max-width:600px){.topbar{height:auto;min-height:76px;flex-wrap:wrap;gap:10px;padding:12px 0}.header-actions{flex-wrap:wrap}.study-link{font-size:11px}}

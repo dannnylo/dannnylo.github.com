@@ -1,6 +1,7 @@
 'use strict';
 const TRANSLATIONS = {
   "pt": {
+    "cellStudy": "Estudar a célula ↗",
     "brand": "LABORATÓRIO DE DESCOBERTAS",
     "help": "Como jogar",
     "eyebrow": " BIOLOGIA EM CADA COMBINAÇÃO",
@@ -59,6 +60,7 @@ const TRANSLATIONS = {
     "statusWin": "Você descobriu um organismo! Continue jogando para somar pontos."
   },
   "en": {
+    "cellStudy": "Study the cell ↗",
     "brand": "DISCOVERY LAB",
     "help": "How to play",
     "eyebrow": " BIOLOGY IN EVERY MATCH",
