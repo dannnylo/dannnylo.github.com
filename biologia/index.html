@@ -1,30 +1,42 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#163c32">
-  <title>BioMerge — Small beginnings. Big discoveries.</title>
-  <link rel="stylesheet" href="style.css">
+  <title>BioMerge — Explore biology</title>
   <script src="i18n.js" defer></script>
-  <script src="game.js" defer></script>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#193e33;background:#f7f8f2;font-synthesis:none}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;flex-direction:column}.topbar{height:76px;padding:0 clamp(18px,5vw,72px);border-bottom:1px solid #dfe5da;display:flex;align-items:center;justify-content:space-between}.brand{color:#1c4637;text-decoration:none;font-size:26px;font-weight:750;letter-spacing:-1.4px}.brand>span:not(.mark){font-weight:400}.mark{font-size:36px;margin-right:9px}.actions,.lang{display:flex;align-items:center;gap:12px}.lang{font-size:12px;color:#607258}select{padding:8px;border:1px solid #d8dfd4;border-radius:7px;background:#fff;color:#193e33}main{width:min(1100px,90vw);margin:auto;padding:58px 0 72px;flex:1}.eyebrow{font-size:10px;letter-spacing:2px;color:#6b8356;font-weight:750}.eyebrow:before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:#78956b}h1{font-size:clamp(38px,6vw,70px);letter-spacing:-3px;line-height:1.03;font-weight:550;margin:19px 0}h1 em{font-family:Georgia,serif;font-weight:400;color:#71875c}.intro{font-size:16px;color:#74806e;line-height:1.7;max-width:620px}.contents-label{margin:54px 0 16px;font-size:10px;font-weight:750;letter-spacing:1.8px;color:#849078}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.card{position:relative;display:flex;flex-direction:column;min-height:270px;padding:30px;color:inherit;text-decoration:none;background:#fffef9;border:1px solid #e0e6d9;border-radius:16px;transition:transform .18s,box-shadow .18s}.card:hover{transform:translateY(-3px);box-shadow:0 14px 38px #193e3310}.icon{font-size:26px;color:#71875c;width:48px;height:48px;display:grid;place-items:center;border-radius:13px;background:#edf2e4}.card h2{font-size:25px;letter-spacing:-.7px;font-weight:600;margin:22px 0 6px}.card p{font-size:13px;line-height:1.7;color:#7a8572;margin:0;max-width:460px}.arrow{font-size:13px;color:#57734b;font-weight:650;margin-top:auto;padding-top:26px}.footer{border-top:1px solid #e0e5d9;padding:19px clamp(18px,5vw,72px);font-size:10px;color:#89927f}@media(max-width:640px){.topbar{height:66px}.brand{font-size:22px}main{padding:44px 0}.cards{grid-template-columns:1fr;gap:13px}.card{min-height:224px;padding:23px}.contents-label{margin-top:38px}h1{letter-spacing:-1.8px}.intro{font-size:14px}}
+  </style>
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="./"><span class="brand-icon">✳</span> bio<span>merge</span><small data-i18n="brand">DISCOVERY LAB</small></a><div class="header-actions"><a class="study-link" href="celula.html" data-i18n="cellStudy">Study the cell ↗</a><label class="language-picker"><span data-i18n="language">Language</span><select id="language"><option value="pt" lang="pt-BR">Português</option><option value="en" lang="en" selected>English</option></select></label><button class="help-button" id="help-button" data-i18n-aria="help" aria-label="How to play">? <span data-i18n="help">How to play</span></button></div></header>
+  <header class="topbar"><a href="index.html" class="brand"><span class="mark">✳</span>bio<span>merge</span></a><div class="actions"><label class="lang"><span data-i18n="language">Language</span><select id="language" aria-label="Language"><option value="en" lang="en" selected>English</option><option value="pt" lang="pt-BR">Português</option></select></label></div></header>
   <main>
-    <section class="intro"><div class="eyebrow"><span></span><span data-i18n="eyebrow"> BIOLOGY IN EVERY MATCH</span></div><h1 data-i18n="headline">Small pieces.<br>Big <em>discoveries.</em></h1><p data-i18n="intro">Merge matching structures and discover the levels<br class="desktop-break"> of biological organization. It all starts with an atom.</p></section>
-    <div class="workspace">
-      <section class="game-panel" data-i18n-aria="game" aria-label="Biology merge game">
-        <div class="game-toolbar"><div class="score"><span data-i18n="score">SCORE</span><strong id="score">0</strong></div><div class="score record"><span data-i18n="best">BEST</span><strong id="best">0</strong></div><button id="restart" class="restart" data-i18n="restart"><span aria-hidden="true">↻</span> New game</button></div>
-        <label class="merge-option"><input type="checkbox" id="sideways-merge" checked> <span data-i18n="sideways">Also merge side by side</span></label><div class="drop-info"><span data-i18n="stack">STACK AND MERGE</span><div><span data-i18n="next">Next:</span> <span id="next-piece"></span></div></div><div class="board-wrap"><div id="board" class="board" role="group" aria-label="Falling area with 128 cells, 8 columns and 16 rows. Use left and right to move and Space to drop." tabindex="0"></div><div id="game-over" class="overlay" hidden><div class="end-icon">✳</div><h2 data-i18n="overTitle">One discovery at a time.</h2><p data-i18n="overText">The lab is full!<br>Ready for a new experiment?</p><button id="play-again" class="primary" data-i18n="again">Try again ↗</button></div></div>
-        <div class="board-caption"><span class="key-icon">⌨</span><span data-i18n="controls"><b>← →</b> move · <b>↓ / Space</b> drop · tap to drop.</span></div>
-        <div class="direction-pad" data-i18n-aria="movement" aria-label="Movement controls"><button data-direction="left" data-i18n-aria="left" aria-label="Move left">←</button><button data-direction="drop" class="drop-button" data-i18n-aria="dropLabel" aria-label="Drop piece" data-i18n="drop">↓ Drop</button><button data-direction="right" data-i18n-aria="right" aria-label="Move right">→</button></div>
-        <p id="status" class="status" role="status" aria-live="polite">Your lab is ready. Make your first match!</p>
-      </section>
-      <aside class="discovery-panel"><div class="panel-label"><span data-i18n="path">YOUR DISCOVERY PATH</span><span id="progress">1 / 8</span></div><h2 data-i18n="matter">From matter to life.</h2><p class="aside-description" data-i18n="chapter">Every merge opens a new chapter.</p><ol id="stages" class="stages"></ol><div class="fact"><span class="fact-label" data-i18n="fact">↗ DID YOU KNOW?</span><p id="fact-text"></p></div></aside>
-    </div>
-    <section class="how-to" id="how-to"><div><span class="step">01</span><h3 data-i18n="step1">Choose where to land</h3><p data-i18n="step1text">Move with ← → or drag your finger.<br>The piece falls automatically.</p></div><div><span class="step">02</span><h3 data-i18n="step2">Find a match</h3><p data-i18n="step2text">Drop a piece on a matching one<br>or beside it to merge.</p></div><div><span class="step">03</span><h3 data-i18n="step3">Keep discovering</h3><p data-i18n="step3text">Create chain reactions.<br>Keep the stacks from reaching the top.</p></div></section>
-    <footer><span data-i18n="footer"><b>bio<span>merge</span></b> · Learning through play.</span><p data-i18n="disclaimer">Educational model: merges are symbolic. In nature, biological structures form through complex processes; not every molecule is a compound.</p><span class="footer-tag" data-i18n="curiosity">MADE OF CURIOSITY ✳</span></footer>
+    <div class="eyebrow" data-i18n="summaryEyebrow">A LITTLE LAB FOR BIG CURIOSITY</div>
+    <h1 data-i18n="summaryHeading">Explore the <em>living world.</em></h1>
+    <p class="intro" data-i18n="summaryIntro">Play, explore the cell, and discover biology one small piece at a time.</p>
+    <p class="contents-label" data-i18n="summaryContents">YOUR ACTIVITIES</p>
+    <nav class="cards" aria-label="Activities">
+      <a class="card" href="jogo.html"><span class="icon" aria-hidden="true">✳</span><h2 data-i18n="summaryGameTitle">BioMerge</h2><p data-i18n="summaryGameText">Drop and combine matching pieces to explore the organization of life, from atoms to organisms.</p><span class="arrow" data-i18n="summaryGameLink">Play the game ↗</span></a>
+      <a class="card" href="celula.html"><span class="icon" aria-hidden="true">◉</span><h2 data-i18n="summaryCellTitle">Inside the cell</h2><p data-i18n="summaryCellText">Explore animal and plant cell diagrams, learn what each part does, and test your memory.</p><span class="arrow" data-i18n="summaryCellLink">Study cell parts ↗</span></a>
+    </nav>
   </main>
-  <dialog id="help"><button id="close-help" class="close" data-i18n-aria="close" aria-label="Close instructions">×</button><span class="eyebrow" data-i18n="welcome">WELCOME TO THE LAB</span><h2 data-i18n="helpTitle">Merge. Discover. Repeat.</h2><p data-i18n="help1">Pieces fall automatically. Use ← and → (or A and D) to move, and ↓ (or S) or Space to drop straight to the last free cell. On mobile, tap a column or drag and release. You can also use the buttons below the board.</p><p data-i18n="help2">When a piece lands, matching pieces merge vertically and, with “Also merge side by side” enabled, horizontally. Diagonal pieces do not merge. Gravity fills the gaps and can trigger chain reactions! You can disable sideways merges; the setting applies when the next piece lands.</p><p data-i18n="help3">Check the next piece before choosing a position. Earn points by merging and reach the goal by discovering an organism. Organisms do not merge. The game ends when all columns are full. Opening this help pauses falling pieces.</p><button id="start-playing" class="primary" data-i18n="play">Let’s discover ↗</button></dialog>
+  <footer class="footer" data-i18n="summaryFooter">BIOLOGY LEARNING LAB · BUILT FROM CURIOSITY ✳</footer>
+<script>
+function applySummaryLanguage(value){
+ const language=value==='pt'?'pt':'en';
+ try{localStorage.setItem('biomerge-language',language)}catch{}
+ document.documentElement.lang=language==='pt'?'pt-BR':'en';
+ document.title=language==='pt'?'BioMerge — Explore a biologia':'BioMerge — Explore biology';
+ document.querySelector('#language').value=language;
+ document.querySelectorAll('[data-i18n]').forEach(element=>{element.innerHTML=TRANSLATIONS[language][element.dataset.i18n]});
+ document.querySelectorAll('[data-i18n-aria]').forEach(element=>{element.setAttribute('aria-label',TRANSLATIONS[language][element.dataset.i18nAria])});
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ document.querySelector('#language').addEventListener('change',event=>applySummaryLanguage(event.target.value));
+ applySummaryLanguage(language);
+});
+</script>
 </body>
 </html>

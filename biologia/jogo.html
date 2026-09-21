@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#163c32">
+  <title>BioMerge — Small beginnings. Big discoveries.</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="i18n.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="index.html"><span class="brand-icon">✳</span> bio<span>merge</span><small data-i18n="brand">DISCOVERY LAB</small></a><div class="header-actions"><a class="study-link" href="celula.html" data-i18n="cellStudy">Study the cell ↗</a><label class="language-picker"><span data-i18n="language">Language</span><select id="language"><option value="pt" lang="pt-BR">Português</option><option value="en" lang="en" selected>English</option></select></label><button class="help-button" id="help-button" data-i18n-aria="help" aria-label="How to play">? <span data-i18n="help">How to play</span></button></div></header>
+  <main>
+    <section class="intro"><div class="eyebrow"><span></span><span data-i18n="eyebrow"> BIOLOGY IN EVERY MATCH</span></div><h1 data-i18n="headline">Small pieces.<br>Big <em>discoveries.</em></h1><p data-i18n="intro">Merge matching structures and discover the levels<br class="desktop-break"> of biological organization. It all starts with an atom.</p></section>
+    <div class="workspace">
+      <section class="game-panel" data-i18n-aria="game" aria-label="Biology merge game">
+        <div class="game-toolbar"><div class="score"><span data-i18n="score">SCORE</span><strong id="score">0</strong></div><div class="score record"><span data-i18n="best">BEST</span><strong id="best">0</strong></div><button id="restart" class="restart" data-i18n="restart"><span aria-hidden="true">↻</span> New game</button></div>
+        <label class="merge-option"><input type="checkbox" id="sideways-merge" checked> <span data-i18n="sideways">Also merge side by side</span></label><div class="drop-info"><span data-i18n="stack">STACK AND MERGE</span><div><span data-i18n="next">Next:</span> <span id="next-piece"></span></div></div><div class="board-wrap"><div id="board" class="board" role="group" aria-label="Falling area with 128 cells, 8 columns and 16 rows. Use left and right to move and Space to drop." tabindex="0"></div><div id="game-over" class="overlay" hidden><div class="end-icon">✳</div><h2 data-i18n="overTitle">One discovery at a time.</h2><p data-i18n="overText">The lab is full!<br>Ready for a new experiment?</p><button id="play-again" class="primary" data-i18n="again">Try again ↗</button></div></div>
+        <div class="board-caption"><span class="key-icon">⌨</span><span data-i18n="controls"><b>← →</b> move · <b>↓ / Space</b> drop · tap to drop.</span></div>
+        <div class="direction-pad" data-i18n-aria="movement" aria-label="Movement controls"><button data-direction="left" data-i18n-aria="left" aria-label="Move left">←</button><button data-direction="drop" class="drop-button" data-i18n-aria="dropLabel" aria-label="Drop piece" data-i18n="drop">↓ Drop</button><button data-direction="right" data-i18n-aria="right" aria-label="Move right">→</button></div>
+        <p id="status" class="status" role="status" aria-live="polite">Your lab is ready. Make your first match!</p>
+      </section>
+      <aside class="discovery-panel"><div class="panel-label"><span data-i18n="path">YOUR DISCOVERY PATH</span><span id="progress">1 / 8</span></div><h2 data-i18n="matter">From matter to life.</h2><p class="aside-description" data-i18n="chapter">Every merge opens a new chapter.</p><ol id="stages" class="stages"></ol><div class="fact"><span class="fact-label" data-i18n="fact">↗ DID YOU KNOW?</span><p id="fact-text"></p></div></aside>
+    </div>
+    <section class="how-to" id="how-to"><div><span class="step">01</span><h3 data-i18n="step1">Choose where to land</h3><p data-i18n="step1text">Move with ← → or drag your finger.<br>The piece falls automatically.</p></div><div><span class="step">02</span><h3 data-i18n="step2">Find a match</h3><p data-i18n="step2text">Drop a piece on a matching one<br>or beside it to merge.</p></div><div><span class="step">03</span><h3 data-i18n="step3">Keep discovering</h3><p data-i18n="step3text">Create chain reactions.<br>Keep the stacks from reaching the top.</p></div></section>
+    <footer><span data-i18n="footer"><b>bio<span>merge</span></b> · Learning through play.</span><p data-i18n="disclaimer">Educational model: merges are symbolic. In nature, biological structures form through complex processes; not every molecule is a compound.</p><span class="footer-tag" data-i18n="curiosity">MADE OF CURIOSITY ✳</span></footer>
+  </main>
+  <dialog id="help"><button id="close-help" class="close" data-i18n-aria="close" aria-label="Close instructions">×</button><span class="eyebrow" data-i18n="welcome">WELCOME TO THE LAB</span><h2 data-i18n="helpTitle">Merge. Discover. Repeat.</h2><p data-i18n="help1">Pieces fall automatically. Use ← and → (or A and D) to move, and ↓ (or S) or Space to drop straight to the last free cell. On mobile, tap a column or drag and release. You can also use the buttons below the board.</p><p data-i18n="help2">When a piece lands, matching pieces merge vertically and, with “Also merge side by side” enabled, horizontally. Diagonal pieces do not merge. Gravity fills the gaps and can trigger chain reactions! You can disable sideways merges; the setting applies when the next piece lands.</p><p data-i18n="help3">Check the next piece before choosing a position. Earn points by merging and reach the goal by discovering an organism. Organisms do not merge. The game ends when all columns are full. Opening this help pauses falling pieces.</p><button id="start-playing" class="primary" data-i18n="play">Let’s discover ↗</button></dialog>
+</body>
+</html>
